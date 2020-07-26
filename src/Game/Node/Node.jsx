@@ -10,9 +10,10 @@ export default class Node extends Component {
             isRight,
             isBottom,
             isTop,
-            onMouseDown,
-            onMouseEnter,
-            onMouseUp,
+            // onMouseDown,
+            // onMouseEnter,
+            // onMouseUp,
+            imgUrl,
         } = this.props;
         const extraClassName = isLeft
          ? 'node-left'
@@ -25,9 +26,13 @@ export default class Node extends Component {
             <div
                 id = {`node-${row}-${col}`}
                 className = {`node ${extraClassName}`}
-                onMouseDown = {() => onMouseDown(row, col)}
-                onMouseEnter = {() => onMouseEnter(row, col)}
-                onMouseUp = {() => onMouseUp()}
+                // onMouseDown = {() => onMouseDown(row, col)}
+                // onMouseEnter = {() => onMouseEnter(row, col)}
+                // onMouseUp = {() => onMouseUp()}
+                style = {{"backgroundImage": "url('"+imgUrl+"')",
+                            "backgroundPosition": "center",
+                            "backgroundRepeat": "no-repeat",
+                        "backgroundColor": ((row+col)%2==0)? 'rgb(144, 184, 214)':'white'}}
             ></div>
         );
     }
