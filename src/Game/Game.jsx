@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import './Game.css';
 import Node from './Node/Node';
 import initial_nodes from './initial_nodes.jsx';
-
-const START_NODE_ROW = 10;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
+import getNewGridWithArotated from './rotateBoard.jsx';
 
 export default class PathfindingVisualizer extends Component {
     constructor() {
@@ -123,69 +119,4 @@ const getNewGridWithWallToggled = (grid, row, col) => {
   };
   newGrid[row][col] = newNode;
   return newGrid;
-};
-
-const getNewGridWithArotated = (grid) => {
-    const newGrid = grid.slice();
-    const newGridCopy = JSON.parse(JSON.stringify(newGrid));
-    
-    // for 5 length
-    for(let i=0; i<5; i+=1){
-        const node = newGridCopy[4-i][0];
-        const newNode = {
-            ...node,
-            row: 0,
-            col: i,
-            isRight: node.isTop,
-            isLeft: node.isBottom,
-            isBottom: node.isRight,
-            isTop: node.isLeft,
-            imgUrl: node.imgUrl,
-        }
-        newGrid[0][i] = newNode;
-    }
-    for(let i=0; i<5; i++){
-        const node = newGridCopy[0][i];
-        const newNode = {
-            ...node,
-            row: i,
-            col: 4,
-            isRight: node.isTop,
-            isLeft: node.isBottom,
-            isBottom: node.isRight,
-            isTop: node.isLeft,
-            imgUrl: node.imgUrl,
-        }
-        newGrid[i][4] = newNode;
-    }
-    for(let i=4; i>=0; i--){
-        const node = newGridCopy[4-i][4];
-        const newNode = {
-            ...node,
-            row: 4,
-            col: i,
-            isRight: node.isTop,
-            isLeft: node.isBottom,
-            isBottom: node.isRight,
-            isTop: node.isLeft,
-            imgUrl: node.imgUrl,
-        }
-        newGrid[4][i] = newNode;
-    }
-    for(let i=4; i>=0; i--){
-        const node = newGridCopy[4][i];
-        const newNode = {
-            ...node,
-            row: i,
-            col: 0,
-            isRight: node.isTop,
-            isLeft: node.isBottom,
-            isBottom: node.isRight,
-            isTop: node.isLeft,
-            imgUrl: node.imgUrl,
-        }
-        newGrid[i][0] = newNode;
-    }
-
-    return newGrid;
 };
