@@ -28,9 +28,9 @@ export default class Node extends Component {
             // onMouseDown,
             // onMouseEnter,
             // onMouseUp,
+            onClick,
             player,
             piece,
-            imgUrl,
         } = this.props;
         const extraClassName = isLeft
          ? 'node-left'
@@ -46,6 +46,7 @@ export default class Node extends Component {
                 // onMouseDown = {() => onMouseDown(row, col)}
                 // onMouseEnter = {() => onMouseEnter(row, col)}
                 // onMouseUp = {() => onMouseUp()}
+                onClick = {() => onClick(row, col, player)}
                 style = {{"backgroundImage": "url('"+this.img_dict[player][piece]+"')",
                             "backgroundPosition": "center",
                             "backgroundRepeat": "no-repeat",
@@ -58,10 +59,10 @@ export default class Node extends Component {
 const getBgColor = (row, col) => {
     // for Boards A, C, E
     if((row < 5 && (Math.floor(col/5))%2 === 0) || (row >= 5 && (Math.floor(col/5))%2 === 1)){
-        return ((row+col)%2==0)? 'rgb(25, 121, 169)':'white';
+        return ((row+col)%2===0)? 'rgb(25, 121, 169)':'white';
     }
     // for boards B, D, F
     else {
-        return ((row+col)%2==0)? 'rgb(144, 184, 214)':'white';
+        return ((row+col)%2===0)? 'rgb(144, 184, 214)':'white';
     }
 };
