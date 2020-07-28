@@ -13,7 +13,8 @@ export default function getNewGridWithArotated(grid){
             isLeft: node.isBottom,
             isBottom: node.isRight,
             isTop: node.isLeft,
-            imgUrl: node.imgUrl,
+            player: node.player,
+            piece: node.piece,
         }
         newGrid[0][i] = newNode;
     }
@@ -27,7 +28,8 @@ export default function getNewGridWithArotated(grid){
             isLeft: node.isBottom,
             isBottom: node.isRight,
             isTop: node.isLeft,
-            imgUrl: node.imgUrl,
+            player: node.player,
+            piece: node.piece,
         }
         newGrid[i][4] = newNode;
     }
@@ -41,7 +43,8 @@ export default function getNewGridWithArotated(grid){
             isLeft: node.isBottom,
             isBottom: node.isRight,
             isTop: node.isLeft,
-            imgUrl: node.imgUrl,
+            player: node.player,
+            piece: node.piece,
         }
         newGrid[4][i] = newNode;
     }
@@ -55,7 +58,8 @@ export default function getNewGridWithArotated(grid){
             isLeft: node.isBottom,
             isBottom: node.isRight,
             isTop: node.isLeft,
-            imgUrl: node.imgUrl,
+            player: node.player,
+            piece: node.piece,
         }
         newGrid[i][0] = newNode;
     }

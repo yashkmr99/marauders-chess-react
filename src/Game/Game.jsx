@@ -48,7 +48,7 @@ export default class PathfindingVisualizer extends Component {
                         <div key = {rowIdx}>
                             {row.map((node, nodeIdx) => {
 
-                                const {row, col, isLeft, isRight, isBottom, isTop, imgUrl} = node;
+                                const {row, col, isLeft, isRight, isBottom, isTop, player, piece} = node;
                                 return (
                                     <Node
                                         key = {nodeIdx}
@@ -62,7 +62,8 @@ export default class PathfindingVisualizer extends Component {
                                         onMouseDown = {(row, col) => this.handleMouseDown(row, col)}
                                         onMouseEnter = {(row, col) => this.handleMouseEnter(row, col)}
                                         onMouseUp = {() => this.handleMouseUp()}
-                                        imgUrl = {imgUrl}
+                                        player = {player}
+                                        piece = {piece}
                                     ></Node>
                                 );
                             })}
@@ -89,16 +90,16 @@ const getInitialGrid = () => {
             const isRight = initial_nodes_border[row*15+col][1];
             const isBottom = initial_nodes_border[row*15+col][2];
             const isTop = initial_nodes_border[row*15+col][3];
-            var imgUrl = "";
-            if(row === 0 && col === 0) imgUrl = "https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg";
-            currentRow.push(createNode(col, row, isLeft, isRight, isBottom, isTop, imgUrl));
+            const player = initial_nodes_border[row*15+col][4];
+            const piece = initial_nodes_border[row*15+col][5];
+            currentRow.push(createNode(col, row, isLeft, isRight, isBottom, isTop, player, piece));
         }
         grid.push(currentRow);
     }
     return grid;
 };
 
-const createNode = (col, row, isLeft, isRight, isBottom, isTop, imgUrl) => {
+const createNode = (col, row, isLeft, isRight, isBottom, isTop, player, piece) => {
     return {
         col,
         row,
@@ -106,7 +107,8 @@ const createNode = (col, row, isLeft, isRight, isBottom, isTop, imgUrl) => {
         isRight,
         isBottom,
         isTop,
-        imgUrl,
+        player,
+        piece,
     };
 };
 
