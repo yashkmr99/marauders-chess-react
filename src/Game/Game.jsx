@@ -14,6 +14,11 @@ export default class PathfindingVisualizer extends Component {
             curr_player: 0,
             log_message: "",
             initial_click: [-1,-1],
+
+            currentClock: '',
+            player1Time: 180000, //Time in milliseconds
+            player2Time: 180000,
+                      
         };
     }
 

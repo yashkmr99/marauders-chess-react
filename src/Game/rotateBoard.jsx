@@ -4,7 +4,7 @@ export default function getNewGridWithRotated(grid,a,b){
     a*=5;
     b*=5;
     // for 3 & 5 length
-    for(let j=0;j<2;j+=1)
+    for(let j=0;j<=2;j+=1)
     {
         for(let i=0; i<(5-2*j); i+=1){
             const node = newGridCopy[a+((5-2*j)-1)-i+j][b+j];
