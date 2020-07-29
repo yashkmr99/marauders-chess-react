@@ -1,5 +1,12 @@
-// left, right, bottom, top, player, piece
-// list of 150*4 regarding borders for every node
+/**
+ * Contains the static variable with the inital props of all nodes
+ * The variable contains a list of list for all nodes (dimension: 150 x 6)
+ * The first 4 bool values correspond to isLeft, isRight, isBottom, isTop (wall position)
+ * (Note that at most one of these must be true)
+ * The last two values contain the information about player and piece
+ * Player: 0, piece: ""
+ * Player: 1/2, piece: "king", "rook", "knight", "bishop"
+ */
 class initial_nodes{
     static initial_nodes_border = [
         // row 1

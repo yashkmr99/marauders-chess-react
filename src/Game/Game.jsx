@@ -4,8 +4,10 @@ import Node from './Node/Node';
 import initial_nodes from './initial_nodes.jsx';
 import getNewGridWithRotated from './rotateBoard.jsx';
 import checkIfValidMove from './checkValidMove.jsx';
+import './ui/headingNav.jsx';
+import HeadingNav from './ui/headingNav.jsx';
 
-export default class PathfindingVisualizer extends Component {
+export default class Game extends Component {
     constructor() {
         super();
         this.state = {
@@ -102,57 +104,64 @@ export default class PathfindingVisualizer extends Component {
         const {grid, mouseIsPressed, curr_player, log_message} = this.state;
         return (
             <>
-            <div className="grid">
-                {grid.map((row, rowIdx) => {
-                    return (
-                        <div key = {rowIdx}>
-                            {row.map((node, nodeIdx) => {
+            <HeadingNav/>
+            <div class="row">
+                <div class="leftcolumn">
+                    <div className="grid">
+                        {grid.map((row, rowIdx) => {
+                            return (
+                                <div key = {rowIdx}>
+                                    {row.map((node, nodeIdx) => {
 
-                                const {row, col, isLeft, isRight, isBottom, isTop, player, piece} = node;
-                                return (
-                                    <Node
-                                        key = {nodeIdx}
-                                        row = {row}
-                                        col = {col}
-                                        isLeft = {isLeft}
-                                        isRight = {isRight}
-                                        isBottom = {isBottom}
-                                        isTop = {isTop}
-                                        mouseIsPressed = {mouseIsPressed}
-                                        // onMouseDown = {(row, col) => this.handleMouseDown(row, col)}
-                                        // onMouseEnter = {(row, col) => this.handleMouseEnter(row, col)}
-                                        // onMouseUp = {() => this.handleMouseUp()}
-                                        onClick = {(row, col, player) => this.handleMouseClick(row, col, player)}
-                                        player = {player}
-                                        piece = {piece}
-                                    ></Node>
-                                );
-                            })}
-                        </div>
-                    );
+                                        const {row, col, isLeft, isRight, isBottom, isTop, player, piece} = node;
+                                        return (
+                                            <Node
+                                                key = {nodeIdx}
+                                                row = {row}
+                                                col = {col}
+                                                isLeft = {isLeft}
+                                                isRight = {isRight}
+                                                isBottom = {isBottom}
+                                                isTop = {isTop}
+                                                mouseIsPressed = {mouseIsPressed}
+                                                // onMouseDown = {(row, col) => this.handleMouseDown(row, col)}
+                                                // onMouseEnter = {(row, col) => this.handleMouseEnter(row, col)}
+                                                // onMouseUp = {() => this.handleMouseUp()}
+                                                onClick = {(row, col, player) => this.handleMouseClick(row, col, player)}
+                                                player = {player}
+                                                piece = {piece}
+                                            ></Node>
+                                        );
+                                    })}
+                                </div>
+                            );
 
-                })}
-            </div>
-            <button onClick = {() => this.rotateA()}>
-                Rotate-A
-            </button>
-            <button onClick = {() => this.rotateB()}>
-                Rotate-B
-            </button>
-            <button onClick = {() => this.rotateC()}>
-                Rotate-C
-            </button>
-            <button onClick = {() => this.rotateD()}>
-                Rotate-D
-            </button>
-            <button onClick = {() => this.rotateE()}>
-                Rotate-E
-            </button>
-            <button onClick = {() => this.rotateF()}>
-                Rotate-F
-            </button>
-            <div><h2>Current player: {curr_player}</h2>
-                <p>Log: {log_message}</p>
+                        })}
+                    </div>
+                    <button onClick = {() => this.rotateA()}>
+                        Rotate-A
+                    </button>
+                    <button onClick = {() => this.rotateB()}>
+                        Rotate-B
+                    </button>
+                    <button onClick = {() => this.rotateC()}>
+                        Rotate-C
+                    </button>
+                    <button onClick = {() => this.rotateD()}>
+                        Rotate-D
+                    </button>
+                    <button onClick = {() => this.rotateE()}>
+                        Rotate-E
+                    </button>
+                    <button onClick = {() => this.rotateF()}>
+                        Rotate-F
+                    </button>
+                </div>
+                <div class="rightcolumn">
+                    <div><h2>Current player: {curr_player}</h2>
+                        <p>Log: {log_message}</p>
+                    </div>
+                </div>
             </div>
             </>
         );

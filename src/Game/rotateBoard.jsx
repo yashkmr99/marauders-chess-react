@@ -1,3 +1,17 @@
+/**
+ * Returns the new grid after converting the current one with the sub-board moved
+ * Board A: a = 0, b = 0
+ * Board B: a = 0, b = 1
+ * Board C: a = 0, b = 2
+ * Board D: a = 1, b = 0
+ * Board E: a = 1, b = 1
+ * Board F: a = 1, b = 2
+ * 
+ * @param {list} grid 
+ * @param {number} a 
+ * @param {number} b
+ * @return {list} new_grid
+ */
 export default function getNewGridWithRotated(grid,a,b){
     const newGrid = grid.slice();
     const newGridCopy = JSON.parse(JSON.stringify(newGrid));
