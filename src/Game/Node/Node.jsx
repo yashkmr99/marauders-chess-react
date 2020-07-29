@@ -56,6 +56,14 @@ export default class Node extends Component {
     }
 }
 
+
+/**
+ * Returns the corresponding Background color for every node
+ * 
+ * @param {number} row 
+ * @param {number} col 
+ * @return {string} The color name or rgb values
+ */
 const getBgColor = (row, col) => {
     // for Boards A, C, E
     if((row < 5 && (Math.floor(col/5))%2 === 0) || (row >= 5 && (Math.floor(col/5))%2 === 1)){

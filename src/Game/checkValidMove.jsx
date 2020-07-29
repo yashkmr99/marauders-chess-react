@@ -1,5 +1,15 @@
-import React from 'react';
-
+/**
+ * Takes the coordinates of first click and second click, and checks if the move is valid
+ * Returns true/false correspondingly. new_grid is returned after making the changes in
+ * case of valid move, otherwise the old grid is returned.
+ * 
+ * @param {list} initial_click 
+ * @param {number} row 
+ * @param {number} col 
+ * @param {list} grid 
+ * @return {boolean} isValid
+ * @return {list} new_grid
+ */
 export default function checkIfValidMove(initial_click, row, col, grid){
 
     const prev_row = initial_click[0];
