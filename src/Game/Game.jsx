@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Game.css';
 import Node from './Node/Node';
 import initial_nodes from './initial_nodes.jsx';
-import getNewGridWithArotated from './rotateBoard.jsx';
+import getNewGridWithRotated from './rotateBoard.jsx';
 import checkIfValidMove from './checkValidMove.jsx';
 
 export default class PathfindingVisualizer extends Component {
@@ -69,7 +69,27 @@ export default class PathfindingVisualizer extends Component {
     }
 
     rotateA(){
-        const newGrid = getNewGridWithArotated(this.state.grid);
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        this.setState({grid: newGrid});
+    }
+    rotateB(){
+        const newGrid = getNewGridWithRotated(this.state.grid,0,1);
+        this.setState({grid: newGrid});
+    }
+    rotateC(){
+        const newGrid = getNewGridWithRotated(this.state.grid,0,2);
+        this.setState({grid: newGrid});
+    }
+    rotateD(){
+        const newGrid = getNewGridWithRotated(this.state.grid,1,0);
+        this.setState({grid: newGrid});
+    }
+    rotateE(){
+        const newGrid = getNewGridWithRotated(this.state.grid,1,1);
+        this.setState({grid: newGrid});
+    }
+    rotateF(){
+        const newGrid = getNewGridWithRotated(this.state.grid,1,2);
         this.setState({grid: newGrid});
     }
 
@@ -110,6 +130,21 @@ export default class PathfindingVisualizer extends Component {
             </div>
             <button onClick = {() => this.rotateA()}>
                 Rotate-A
+            </button>
+            <button onClick = {() => this.rotateB()}>
+                Rotate-B
+            </button>
+            <button onClick = {() => this.rotateC()}>
+                Rotate-C
+            </button>
+            <button onClick = {() => this.rotateD()}>
+                Rotate-D
+            </button>
+            <button onClick = {() => this.rotateE()}>
+                Rotate-E
+            </button>
+            <button onClick = {() => this.rotateF()}>
+                Rotate-F
             </button>
             <div><h2>Current player: {curr_player}</h2>
                 <p>Log: {log_message}</p>
