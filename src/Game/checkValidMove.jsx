@@ -19,19 +19,15 @@ export default function checkIfValidMove(initial_click, row, col, grid){
     var isValid = false;
     switch(piece){
         case "rook"   :
-                        console.log("ROOK MOVED");
                         isValid = checkIfValidMoveRook(prev_row, prev_col, row, col, new_grid);
                         break;
         case "king"   :
-                        console.log("KING MOVED");
                         isValid = checkIfValidMoveKing(prev_row, prev_col, row, col, new_grid);
                         break;
         case "knight" :
-                        console.log("KNIGHT MOVED");
                         isValid = checkIfValidMoveKnight(prev_row, prev_col, row, col, new_grid);
                         break;
         case "bishop" :
-                        console.log("BISHOP MOVED");
                         isValid = checkIfValidMoveBishop(prev_row, prev_col, row, col, new_grid);
                         break;
         default       :
@@ -51,7 +47,19 @@ const hasHorizontalWall = (row, prev_col, end_col, new_grid) =>{
             walls++;
         }
     }
+    console.log("walls in way: "+walls);
     return walls;
+}
+
+const hasHorizontalPiece = (row, prev_col, end_col, new_grid) =>{
+    var piece = 0;
+    for(let curr_col = Math.min(prev_col,end_col)+1; curr_col< Math.max(prev_col,end_col); curr_col++ ){
+        if(new_grid[row][curr_col].player){
+            piece++;
+        }
+    }
+    console.log("Pieces in way: "+piece);
+    return piece;
 }
 
 const hasVerticalWall = (col, prev_row, end_row, new_grid) =>{
@@ -61,7 +69,19 @@ const hasVerticalWall = (col, prev_row, end_row, new_grid) =>{
             walls++;
         }
     }
+    console.log("walls in way: "+walls);
     return walls;
+}
+
+const hasVerticalPiece = (col, prev_row, end_row, new_grid) =>{
+    var piece = 0;
+    for(let curr_row = Math.min(prev_row,end_row)+1; curr_row< Math.max(prev_row,end_row); curr_row++ ){
+        if(new_grid[curr_row][col].player){
+            piece++;
+        }
+    }
+    console.log("Pieces in way: "+piece);
+    return piece;
 }
 // Diagonal Wall can be of 4 types:
 /*
@@ -101,9 +121,29 @@ const hasDiagonalWall = (prev_row, prev_col, end_row, end_col, new_grid) =>{
             return true;
         }
     }
+    console.log("Diagonal walls in way");
     return false;
 }
 
+const hasDiagonalPiece = (prev_row, prev_col, end_row, end_col, new_grid) =>{
+    var piece = 0;
+    // start from the least col value cell and go to max col value cell.
+    var col_list, row_list;
+    if(prev_col < end_col){
+        col_list = numberRange(prev_col,end_col);
+        row_list = numberRange(prev_row,end_row);
+    }else{
+        col_list = numberRange(end_col,prev_col);
+        row_list = numberRange(end_row,prev_row);
+    }
+    for(let i = 0;i < row_list.length - 2; i++){
+        if(new_grid[row_list[i+1]][col_list[i+1]].player){
+            piece++;
+        }
+    }
+    console.log("Pieces in way: "+piece);
+    return piece;
+}
 
 const checkIfValidMoveKing = (prev_row, prev_col, row, col, new_grid) => {
     // Basic Chess move
@@ -114,9 +154,9 @@ const checkIfValidMoveKing = (prev_row, prev_col, row, col, new_grid) => {
     // Checking Wall Block
     // console.log(horiWall1+" "+horiWall2+" "+vertiWall1+" "+vertiWall2);
     if(prev_col === col){
-        isValid = !(hasVerticalWall(prev_col, prev_row, row, new_grid));
+        isValid = !(hasVerticalWall(prev_col, prev_row, row, new_grid) || hasVerticalPiece(prev_col, prev_row, row, new_grid));
     }else if(prev_row === row){
-        isValid = !(hasHorizontalWall(prev_row, prev_col, col, new_grid));
+        isValid = !(hasHorizontalWall(prev_row, prev_col, col, new_grid) || hasHorizontalPiece(prev_row, prev_col, col, new_grid));
     }else{
         isValid = !(hasDiagonalWall(prev_row, prev_col, row, col, new_grid));
     }
@@ -130,10 +170,10 @@ const checkIfValidMoveRook = (prev_row, prev_col, row, col, new_grid) => {
     var isValid = true;
 
     if(col === prev_col){
-        isValid = !hasVerticalWall(col, prev_row, row, new_grid);
+        isValid = !(hasVerticalWall(col, prev_row, row, new_grid) || hasVerticalPiece(col, prev_row, row, new_grid));
     }
     else {
-        isValid = !hasHorizontalWall(row, prev_col, col, new_grid);
+        isValid = !(hasHorizontalWall(row, prev_col, col, new_grid) || hasHorizontalPiece(row, prev_col, col, new_grid));
     }
     return isValid;
 };
@@ -143,7 +183,7 @@ const checkIfValidMoveBishop = (prev_row, prev_col, row, col, new_grid) => {
     if(Math.abs(prev_row-row) !== Math.abs(prev_col-col)) return false;
     var isValid = true;
 
-    isValid = !(hasDiagonalWall(prev_row, prev_col, row, col, new_grid));
+    isValid = !(hasDiagonalWall(prev_row, prev_col, row, col, new_grid) || hasDiagonalPiece(prev_row, prev_col, row, col, new_grid));
 
     return isValid;
 };
