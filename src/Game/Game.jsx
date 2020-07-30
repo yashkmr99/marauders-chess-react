@@ -6,7 +6,10 @@ import getNewGridWithRotated from './rotateBoard.jsx';
 import checkIfValidMove from './checkValidMove.jsx';
 import './ui/headingNav.jsx';
 import HeadingNav from './ui/headingNav.jsx';
-import Clock from './clock/Timer';
+import GameInfo from './ui/gameInfo.jsx';
+import "bootstrap/dist/css/bootstrap.min.css";
+import {Button} from 'react-bootstrap';
+// import Clock from './clock/Timer';
 
 export default class Game extends Component {
     constructor() {
@@ -235,11 +238,20 @@ export default class Game extends Component {
         return (
             <>
             <HeadingNav/>
-            <div>Player1 Time:<Clock time={player1Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
-            <div>Player2 Time:<Clock time={player2Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
-
+            {/* <div>Player1 Time:<Clock time={player1Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
+            <div>Player2 Time:<Clock time={player2Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div> */}
+            <div class = "container">
             <div class="row">
-                <div class="leftcolumn">
+                <div class = "col-sm-10" class = "col-md-10" class="col-lg-10">
+                <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateA()}>
+                        Rotate-A
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateB()}>
+                        Rotate-B
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateC()}>
+                        Rotate-C
+                    </button>
                     <div className="grid">
                         {grid.map((row, rowIdx) => {
                             return (
@@ -271,29 +283,23 @@ export default class Game extends Component {
 
                         })}
                     </div>
-                    <button onClick = {() => this.rotateA()}>
-                        Rotate-A
-                    </button>
-                    <button onClick = {() => this.rotateB()}>
-                        Rotate-B
-                    </button>
-                    <button onClick = {() => this.rotateC()}>
-                        Rotate-C
-                    </button>
-                    <button onClick = {() => this.rotateD()}>
+                    
+                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateD()}>
                         Rotate-D
                     </button>
-                    <button onClick = {() => this.rotateE()}>
+                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateE()}>
                         Rotate-E
                     </button>
-                    <button onClick = {() => this.rotateF()}>
+                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateF()}>
                         Rotate-F
                     </button>
                 </div>
-                <div class="rightcolumn">
-                    <div><h2>Current player: {curr_player}</h2>
-                        <p>Log: {log_message}</p>
-                    </div>
+                
+                <GameInfo   curr_player = {curr_player}
+                            log_message = {log_message}
+                            player1Time = {player1Time}
+                            player2Time = {player2Time}
+                            intervalID = {this.intervalID}/>
                 </div>
             </div>
             </>

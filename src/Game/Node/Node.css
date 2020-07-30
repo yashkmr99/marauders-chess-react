@@ -4,28 +4,46 @@
     outline: 1px solid rgb(144, 184, 214);
     /* outline-offset: -5px; */
     display: inline-block;
+    margin-bottom: -2px;
+    margin-top: -2px;
 }
 
 .node-right {
     border-right: 5px solid #000;
-    width: 55px;
+    /* width: 60px; */
     /* box-shadow: inset -8px 0 10px -6px black; */
 }
 
 .node-bottom {
     border-bottom: 5px solid #000;
-    height: 55px;
+    /* height: 60px; */
     /* box-shadow: inset 0 -8px 10px -6px black; */
 }
 
 .node-left {
     border-left: 5px solid #000;
-    width: 55px;
+    /* width: 60px; */
     /* box-shadow: inset 8px 0 10px -6px black; */
 }
 
 .node-top {
     border-top: 5px solid #000;
-    height: 55px;
+    /* height: 60px; */
     /* box-shadow: inset 0 8px 10px -6px black; */
 }
+
+
+  @media screen and (max-width: 1400px) {
+    .node{
+        width: 44px;
+        height: 44px;
+    }
+  }
+  
+  /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+  @media screen and (max-width: 700px) {
+    .node {
+        width: 22px;
+        height: 22px;
+    }
+  }
