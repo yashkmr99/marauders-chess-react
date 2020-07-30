@@ -2,11 +2,11 @@
  * Takes the coordinates of first click and second click, and checks if the move is valid
  * Returns true/false correspondingly. new_grid is returned after making the changes in
  * case of valid move, otherwise the old grid is returned.
- * 
- * @param {list} initial_click 
- * @param {number} row 
- * @param {number} col 
- * @param {list} grid 
+ *
+ * @param {list} initial_click
+ * @param {number} row
+ * @param {number} col
+ * @param {list} grid
  * @return {boolean} isValid
  * @return {list} new_grid
  */
@@ -79,18 +79,23 @@ const hasDiagonalWall = (prev_row, prev_col, end_row, end_col, new_grid) =>{
     var horiWall2 = false;
     var vertiWall2 = false;
     // start from the least col value cell and go to max col value cell.
+    var col_list, row_list;
     if(prev_col < end_col){
-        var col_list = numberRange(prev_col,end_col);
-        var row_list = numberRange(prev_row,end_row);
+        col_list = numberRange(prev_col,end_col);
+        row_list = numberRange(prev_row,end_row);
     }else{
-        var col_list = numberRange(end_col,prev_col);
-        var row_list = numberRange(end_row,prev_row);
+        col_list = numberRange(end_col,prev_col);
+        row_list = numberRange(end_row,prev_row);
     }
     for(let i = 0;i < row_list.length - 1; i++){
-        horiWall1 = new_grid[row_list[i]][col_list[i]].isRight || new_grid[row_list[i]][col_list[i]+1].isLeft;
-        vertiWall1 = new_grid[Math.min(row_list[i],row_list[i+1])][col_list[i]].isBottom || new_grid[Math.max(row_list[i],row_list[i+1])][col_list[i]].isTop;
-        horiWall2 = new_grid[row_list[i+1]][(col_list[i])].isRight || new_grid[row_list[i+1]][(col_list[i+1])].isLeft;
-        vertiWall2 = new_grid[Math.min(row_list[i],row_list[i+1])][col_list[i+1]].isBottom || new_grid[Math.max(row_list[i],row_list[i+1])][col_list[i+1]].isTop;
+        // horiWall1 = new_grid[row_list[i]][col_list[i]].isRight || new_grid[row_list[i]][col_list[i]+1].isLeft;
+        // vertiWall1 = new_grid[Math.min(row_list[i],row_list[i+1])][col_list[i]].isBottom || new_grid[Math.max(row_list[i],row_list[i+1])][col_list[i]].isTop;
+        // horiWall2 = new_grid[row_list[i+1]][(col_list[i])].isRight || new_grid[row_list[i+1]][(col_list[i+1])].isLeft;
+        // vertiWall2 = new_grid[Math.min(row_list[i],row_list[i+1])][col_list[i+1]].isBottom || new_grid[Math.max(row_list[i],row_list[i+1])][col_list[i+1]].isTop;
+        horiWall1 = hasHorizontalWall(row_list[i], col_list[i], col_list[i+1],new_grid);
+        vertiWall1 = hasVerticalWall(col_list[i], row_list[i], row_list[i+1], new_grid);
+        horiWall2 = hasHorizontalWall(row_list[i+1], col_list[i], col_list[i+1], new_grid);
+        vertiWall2 = hasVerticalWall(col_list[i+1], row_list[i], row_list[i+1], new_grid);
 
         if((horiWall1&&(horiWall2||vertiWall1))||(vertiWall1&&(horiWall1||vertiWall2)) || (horiWall2&&vertiWall2)){
             return true;
