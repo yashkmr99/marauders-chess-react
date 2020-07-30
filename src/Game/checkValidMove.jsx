@@ -28,6 +28,7 @@ export default function checkIfValidMove(initial_click, row, col, grid){
                         break;
         case "knight" :
                         console.log("KNIGHT MOVED");
+                        isValid = checkIfValidMoveKnight(prev_row, prev_col, row, col, new_grid);
                         break;
         case "bishop" :
                         console.log("BISHOP MOVED");
@@ -44,21 +45,23 @@ export default function checkIfValidMove(initial_click, row, col, grid){
 }
 // Horizontal Wall means Wall in horizontal Direction
 const hasHorizontalWall = (row, prev_col, end_col, new_grid) =>{
+    var walls = 0;
     for(let curr_col = Math.min(prev_col,end_col); curr_col< Math.max(prev_col,end_col); curr_col++ ){
         if(new_grid[row][curr_col].isRight || new_grid[row][curr_col+1].isLeft){
-            return true;
+            walls++;
         }
     }
-    return false;
+    return walls;
 }
 
 const hasVerticalWall = (col, prev_row, end_row, new_grid) =>{
+    var walls=0;
     for(let curr_row = Math.min(prev_row,end_row); curr_row< Math.max(prev_row,end_row); curr_row++ ){
         if(new_grid[curr_row][col].isBottom || new_grid[curr_row+1][col].isTop){
-            return true;
+            walls++;
         }
     }
-    return false;
+    return walls;
 }
 // Diagonal Wall can be of 4 types:
 /*
@@ -137,15 +140,27 @@ const checkIfValidMoveRook = (prev_row, prev_col, row, col, new_grid) => {
 
 const checkIfValidMoveBishop = (prev_row, prev_col, row, col, new_grid) => {
 
-    if(Math.abs(prev_row-row) != Math.abs(prev_col-col)) return false;
+    if(Math.abs(prev_row-row) !== Math.abs(prev_col-col)) return false;
     var isValid = true;
 
     isValid = !(hasDiagonalWall(prev_row, prev_col, row, col, new_grid));
+
     return isValid;
 };
 
 const checkIfValidMoveKnight = (prev_row, prev_col, row, col, new_grid) => {
-    return true;
+    var row_diff = Math.abs(prev_row-row);
+    var col_diff = Math.abs(prev_col-col);
+    if((row_diff*col_diff !== 2)) return false;
+
+    var isValid = true;
+    if(row_diff === 2){
+        isValid = !(Math.floor((hasVerticalWall(prev_col, prev_row, row, new_grid) + hasHorizontalWall(row, prev_col, col, new_grid))/2));
+    }else{
+        isValid = !(Math.floor((hasHorizontalWall(prev_row, prev_col, col, new_grid) + hasVerticalWall(col, prev_row, row, new_grid))/2));
+    }
+
+    return isValid;
 };
 
 const getNewGrid = (prev_row, prev_col, row, col, new_grid) => {
