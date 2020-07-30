@@ -6,6 +6,7 @@ import getNewGridWithRotated from './rotateBoard.jsx';
 import checkIfValidMove from './checkValidMove.jsx';
 import './ui/headingNav.jsx';
 import HeadingNav from './ui/headingNav.jsx';
+import Clock from './clock/Timer';
 
 export default class Game extends Component {
     constructor() {
@@ -17,10 +18,8 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
 
-            currentClock: '',
-            player1Time: 180000, //Time in milliseconds
+            player1Time: 180000,  //Time in milliseconds
             player2Time: 180000,
-                      
         };
     }
 
@@ -28,6 +27,18 @@ export default class Game extends Component {
         const grid = getInitialGrid();
         const curr_player = 1;
         this.setState({grid, curr_player});
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
     }
 
     // handleMouseDown(row, col){
@@ -46,10 +57,10 @@ export default class Game extends Component {
     // }
 
     handleMouseClick(row, col, player){
-        var log_message = "clicked row: " + row.toString() + " col: " + col.toString();
-        var initial_click = [-1, -1];
-        var curr_player = this.state.curr_player;
-
+        let log_message = "clicked row: " + row.toString() + " col: " + col.toString();
+        let initial_click = [-1, -1];
+        let curr_player = this.state.curr_player;
+        
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
             log_message += ". Player " + player.toString() + " piece selected.";
@@ -64,9 +75,25 @@ export default class Game extends Component {
         else{
             const [isValidMove, new_grid] = checkIfValidMove(this.state.initial_click, row, col, this.state.grid);
             if(isValidMove){
+                clearInterval(this.intervalID);
+                
                 log_message += ". Valid move.";
                 this.setState({new_grid});
+
                 curr_player = 3 - curr_player;
+                
+                this.intervalID = setInterval(()=>{
+                    let player1Time = this.state.player1Time;
+                    let player2Time = this.state.player2Time;
+
+                    if(curr_player===1){
+                        player1Time-=1000;
+                    }
+                    else{
+                        player2Time-=1000;
+                    } 
+                    this.setState({player1Time, player2Time});
+                },1000);
             }
             else log_message += ". Invalid move.";
             
@@ -75,36 +102,142 @@ export default class Game extends Component {
         this.setState({log_message, initial_click, curr_player});
     }
 
+    // Roatating also constitues 1 move
     rotateA(){
         const newGrid = getNewGridWithRotated(this.state.grid,0,0);
-        this.setState({grid: newGrid});
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+
+        this.setState({grid: newGrid, curr_player});
     }
     rotateB(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,1);
-        this.setState({grid: newGrid});
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+    
+        this.setState({grid: newGrid, curr_player});
     }
     rotateC(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,2);
-        this.setState({grid: newGrid});
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+    
+        this.setState({grid: newGrid, curr_player});
     }
     rotateD(){
-        const newGrid = getNewGridWithRotated(this.state.grid,1,0);
-        this.setState({grid: newGrid});
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+    
+        this.setState({grid: newGrid, curr_player});
     }
     rotateE(){
-        const newGrid = getNewGridWithRotated(this.state.grid,1,1);
-        this.setState({grid: newGrid});
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+    
+        this.setState({grid: newGrid, curr_player});
     }
     rotateF(){
-        const newGrid = getNewGridWithRotated(this.state.grid,1,2);
-        this.setState({grid: newGrid});
+        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        let curr_player = this.state.curr_player;
+        clearInterval(this.intervalID);
+        curr_player = 3 - curr_player;
+                
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(curr_player===1){
+                player1Time-=1000;
+            }
+            else{
+                player2Time-=1000;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
+    
+        this.setState({grid: newGrid, curr_player});
     }
 
     render(){
-        const {grid, mouseIsPressed, curr_player, log_message} = this.state;
+        const {grid, mouseIsPressed, curr_player, log_message, player1Time, player2Time} = this.state;
         return (
             <>
             <HeadingNav/>
+            <div>Player1 Time:<Clock time={player1Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
+            <div>Player2 Time:<Clock time={player2Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
+
             <div class="row">
                 <div class="leftcolumn">
                     <div className="grid">
