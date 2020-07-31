@@ -128,7 +128,7 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
     rotateB(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        const newGrid = getNewGridWithRotated(this.state.grid,0,1);
         let curr_player = this.state.curr_player;
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
@@ -149,7 +149,7 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
     rotateC(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        const newGrid = getNewGridWithRotated(this.state.grid,0,2);
         let curr_player = this.state.curr_player;
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
@@ -170,7 +170,7 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
     rotateD(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        const newGrid = getNewGridWithRotated(this.state.grid,1,0);
         let curr_player = this.state.curr_player;
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
@@ -191,7 +191,7 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
     rotateE(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        const newGrid = getNewGridWithRotated(this.state.grid,1,1);
         let curr_player = this.state.curr_player;
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
@@ -212,7 +212,7 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
     rotateF(){
-        const newGrid = getNewGridWithRotated(this.state.grid,0,0);
+        const newGrid = getNewGridWithRotated(this.state.grid,1,2);
         let curr_player = this.state.curr_player;
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
