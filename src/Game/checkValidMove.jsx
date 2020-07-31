@@ -16,6 +16,7 @@ export default function checkIfValidMove(initial_click, row, col, grid){
     const prev_col = initial_click[1];
     var new_grid = grid.slice();
     const piece = new_grid[prev_row][prev_col].piece;
+    var piece_killed = '';
     var isValid = false;
     switch(piece){
         case "rook"   :
@@ -35,9 +36,10 @@ export default function checkIfValidMove(initial_click, row, col, grid){
                         break;
     }
 
-    if(isValid) new_grid = getNewGrid(prev_row, prev_col, row, col, new_grid);
+    if(isValid) [new_grid, piece_killed] = getNewGrid(prev_row, prev_col, row, col, new_grid);
+    console.log(piece_killed);
 
-    return [isValid, new_grid];
+    return [isValid, new_grid, piece_killed];
 }
 // Horizontal Wall means Wall in horizontal Direction
 const hasHorizontalWall = (row, prev_col, end_col, new_grid) =>{
@@ -207,6 +209,7 @@ const getNewGrid = (prev_row, prev_col, row, col, new_grid) => {
 
     const node_prev = new_grid[prev_row][prev_col];
     const node_next = new_grid[row][col];
+    const piece_killed = node_next.piece;
 
     const new_node_prev = {
         ...node_prev,
@@ -222,4 +225,5 @@ const getNewGrid = (prev_row, prev_col, row, col, new_grid) => {
 
     new_grid[row][col] = new_node_next;
     new_grid[prev_row][prev_col] = new_node_prev;
+    return [new_grid, piece_killed];
 };

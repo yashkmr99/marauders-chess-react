@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import './ui.css';
 import {Modal, Button} from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
+import Game from '../Game.jsx';
 
 class HeadingNav extends Component {
+	constructor(props){
+		super(props);
+		this.quitGame = this.quitGame.bind(this);
+	}
+
+	quitGame(){
+		this.props.quitGame();
+	}
+
     render(){
         return (
             <div>
@@ -20,6 +30,10 @@ class HeadingNav extends Component {
                         <button>About</button> */}
                         <RulesModal/>
                         <AboutModal/>
+						{this.props.gameRunning
+						?	<QuitModal quitGame = {this.quitGame}/>
+						: <a class="notWorking">Quit</a>	
+						}
                     </nav>
                     </div>
                 </div>
@@ -132,6 +146,60 @@ class RulesModal extends Component {
 					<Modal.Footer>
 						<Button variant="secondary" onClick={this.handleClose}>
 							Close
+                        </Button>
+					</Modal.Footer>
+				</Modal>
+			</>
+		);
+	}
+}
+
+
+class QuitModal extends Component {
+    
+    constructor(props, context) {
+		super(props, context);
+
+		this.handleShow = this.handleShow.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+		this.handleQuit = this.handleQuit.bind(this);
+
+		this.state = {
+			show: false,
+		};
+	}
+
+	handleClose() {
+		this.setState({ show: false });
+	}
+
+	handleShow() {
+		this.setState({ show: true });
+	}
+
+	handleQuit(){
+		this.setState({show: false});
+		this.props.quitGame();
+	}
+
+	render() {
+		return (
+			<>
+				<Button variant="primary" onClick={this.handleShow}>
+					Quit
+                </Button>
+
+				<Modal show={this.state.show} onHide={this.handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>Exit Game?</Modal.Title>
+					</Modal.Header>
+					
+					<Modal.Footer>
+						<Button variant="danger" onClick = {this.handleQuit}>
+							Quit
+						</Button>
+						<Button variant="secondary" onClick={this.handleClose}>
+							Cancel
                         </Button>
 					</Modal.Footer>
 				</Modal>
