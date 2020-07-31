@@ -63,6 +63,11 @@
 	opacity: 1;
 }
 
+.header-limiter nav a.notWorking {
+  pointer-events: none;
+  opacity: 0.9
+}
+
 .header .header-limiter nav button{
   display: inline-block;
   padding: 0 20px;
@@ -124,10 +129,13 @@
   float: left;
   overflow: hidden;
   width: 100%;
-  color: #000000;
+  color: #ffffff;
   text-align: center;
-  height:368px;
+  height:268px;
   border:none;
+  background: #007991;
+  background: -webkit-linear-gradient(to right, #007991, #78ffd6);
+  background: linear-gradient(to right, #007991, #78ffd6);
 }
 .profile-card-1 .background {
   width:100%;
@@ -148,7 +156,7 @@
 .profile-card-1 .profile {
   border-radius: 50%;
   position: absolute;
-  bottom: 70%;
+  bottom: 55%;
   left: 50%;
   max-width: 100px;
   opacity: 1;
@@ -160,7 +168,7 @@
 .profile-card-1 .profile2 {
   border-radius: 50%;
   position: absolute;
-  bottom: 70%;
+  bottom: 55%;
   left: 50%;
   max-width: 100px;
   opacity: 1;
@@ -204,3 +212,90 @@
   color:#2E3434;
   text-decoration:none;
 }
+
+
+/* Countdown */
+
+.countdown {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.countdown span {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 3rem;
+  margin-left: 0.8rem;
+}
+
+.countdown span:first-of-type {
+  margin-left: 0;
+}
+
+.countdown-circles {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.countdown-circles span {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-circles span:first-of-type {
+  margin-left: 0;
+}
+
+
+/*
+*
+* ==================================================
+* FOR DEMO PURPOSES
+* ==================================================
+*
+*/
+.bg-gradient-1 {
+  background: #7f7fd5;
+  background: -webkit-linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+  background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+}
+
+.bg-gradient-2 {
+  background: #654ea3;
+  background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
+  background: linear-gradient(to right, #654ea3, #eaafc8);
+}
+
+.bg-gradient-3 {
+  background: #ff416c;
+  background: -webkit-linear-gradient(to right, #ff416c, #ff4b2b);
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+}
+
+.bg-gradient-4 {
+  background: #007991;
+  background: -webkit-linear-gradient(to right, #007991, #78ffd6);
+  background: linear-gradient(to right, #007991, #78ffd6);
+}
+
+.bg-blank {
+  background: #000000;
+  background: -webkit-linear-gradient(to right, #888888, #000000);
+  background: linear-gradient(to right, #7a7a7a, #000000);
+}
+
+.rounded {
+  border-radius: 1rem !important;
+}
+
+
+
+/* one line */
+.oneline {
+  display: inline-block;
+ }

@@ -8,8 +8,7 @@ import './ui/headingNav.jsx';
 import HeadingNav from './ui/headingNav.jsx';
 import GameInfo from './ui/gameInfo.jsx';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Button} from 'react-bootstrap';
-// import Clock from './clock/Timer';
+import OutsideGame from './ui/outsideGame.jsx';
 
 export default class Game extends Component {
     constructor() {
@@ -20,10 +19,13 @@ export default class Game extends Component {
             curr_player: 0,
             log_message: "",
             initial_click: [-1,-1],
+            gameRunning: false,
 
             player1Time: 180000,  //Time in milliseconds
             player2Time: 180000,
         };
+        this.startSamePC = this.startSamePC.bind(this);
+        this.quitGame = this.quitGame.bind(this);
     }
 
     componentDidMount(){
@@ -60,27 +62,31 @@ export default class Game extends Component {
     // }
 
     handleMouseClick(row, col, player){
-        let log_message = "clicked row: " + row.toString() + " col: " + col.toString();
+        var piece_killed = '';
+        // let log_message = "clicked row: " + row.toString() + " col: " + col.toString();
+        let log_message = "";
         let initial_click = [-1, -1];
         let curr_player = this.state.curr_player;
         
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
-            log_message += ". Player " + player.toString() + " piece selected.";
+            // log_message += ". Player " + player.toString() + " piece selected.";
+            log_message += "Piece selected";
             initial_click = [row, col];
         }
 
         // If piece to move not slected, initial_click will be [-1,-1]
         else if (this.state.initial_click[0] === -1){
-            log_message += ". Invalid click."
+            log_message += "Invalid click"
         }
 
         else{
-            const [isValidMove, new_grid] = checkIfValidMove(this.state.initial_click, row, col, this.state.grid);
+            var isValidMove = false; var new_grid;
+            [isValidMove, new_grid, piece_killed] = checkIfValidMove(this.state.initial_click, row, col, this.state.grid);
             if(isValidMove){
                 clearInterval(this.intervalID);
                 
-                log_message += ". Valid move.";
+                log_message += "Valid move";
                 this.setState({new_grid});
 
                 curr_player = 3 - curr_player;
@@ -98,11 +104,15 @@ export default class Game extends Component {
                     this.setState({player1Time, player2Time});
                 },1000);
             }
-            else log_message += ". Invalid move.";
+            else log_message += "Invalid move";
             
         }
 
         this.setState({log_message, initial_click, curr_player});
+        if(piece_killed === 'king'){
+            this.quitGame();
+            alert('Game Over: Player ' + (3-curr_player) + ' won !!');
+        }
     }
 
     // Roatating also constitues 1 move
@@ -233,23 +243,41 @@ export default class Game extends Component {
         this.setState({grid: newGrid, curr_player});
     }
 
+    startSamePC(timeLimitEntered){
+        if(timeLimitEntered === '') return;
+        const player1Time = parseInt(timeLimitEntered) * 60000;
+        const player2Time = parseInt(timeLimitEntered) * 60000;
+        const gameRunning = true;
+        this.setState({player1Time, player2Time, gameRunning});
+        const grid = getInitialGrid();
+        const curr_player = 1;
+        this.setState({grid, curr_player});
+        // window.location.reload(false);
+        // alert('New game started with time limit (minutes): ' + timeLimitEntered);
+    }
+
+    quitGame(){
+        this.setState({gameRunning: false});
+    }
+
     render(){
         const {grid, mouseIsPressed, curr_player, log_message, player1Time, player2Time} = this.state;
         return (
             <>
-            <HeadingNav/>
+            <HeadingNav gameRunning = {this.state.gameRunning}
+                        quitGame = {this.quitGame}/>
             {/* <div>Player1 Time:<Clock time={player1Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
             <div>Player2 Time:<Clock time={player2Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div> */}
-            <div class = "container">
+            <div class = "container-fluid">
             <div class="row">
-                <div class = "col-sm-10" class = "col-md-10" class="col-lg-10">
-                <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateA()}>
+                <div class = "col-sm-9" class = "col-md-9" class="col-lg-9">
+                <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotateA()}>
                         Rotate-A
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateB()}>
+                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotateB()}>
                         Rotate-B
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateC()}>
+                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotateC()}>
                         Rotate-C
                     </button>
                     <div className="grid">
@@ -284,22 +312,24 @@ export default class Game extends Component {
                         })}
                     </div>
                     
-                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateD()}>
+                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotateD()}>
                         Rotate-D
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateE()}>
+                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotateE()}>
                         Rotate-E
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onClick = {() => this.rotateF()}>
+                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotateF()}>
                         Rotate-F
                     </button>
                 </div>
-                
-                <GameInfo   curr_player = {curr_player}
-                            log_message = {log_message}
-                            player1Time = {player1Time}
-                            player2Time = {player2Time}
-                            intervalID = {this.intervalID}/>
+                {this.state.gameRunning
+                ? <GameInfo   curr_player = {curr_player}
+                                log_message = {log_message}
+                                player1Time = {player1Time}
+                                player2Time = {player2Time}
+                                intervalID = {this.intervalID}/>
+                : <OutsideGame startSamePC={this.startSamePC}/>
+                }
                 </div>
             </div>
             </>

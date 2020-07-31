@@ -8,7 +8,7 @@ function parseTime(miliseconds){
     minutes = (minutes < 10) ? `0${minutes}` : minutes;
     seconds = (seconds < 10) ? `0${seconds}` : seconds;
   
-    return `${minutes}:${seconds}`;
+    return [minutes, seconds];
 };
 
 
@@ -25,8 +25,13 @@ export default class Clock extends Component {
 
 
     render() {
-        const time = parseTime(this.props.time);
-        return <div>{time}</div>;
+        const [minutes, seconds] = parseTime(this.props.time);
+        return (
+            <>
+            <div class="holder m-2"><span class="h2 font-weight-bold">{minutes}</span> Min</div>
+            <div class="holder m-2"><span class="h2 font-weight-bold">{seconds}</span> Sec</div>
+            </>
+        );
     }
 }
     
