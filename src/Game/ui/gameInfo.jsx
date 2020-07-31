@@ -17,8 +17,8 @@ class GameInfo extends Component {
                     }
                     <div class="card-content">
                     <h5 class="font-weight-bold">Current Player: {this.props.curr_player}</h5>
-                    <h6>Player 1: <Clock time={this.props.player1Time} timeOver= {() => {clearInterval(this.props.intervalID);}} /></h6>
-                    <h6>Player 2: <Clock time={this.props.player2Time} timeOver= {() => {clearInterval(this.props.intervalID);}} /></h6>
+                    <h6>Player 1: <Clock time={this.props.player1Time} timeOver= {() => this.props.timeOver()} /></h6>
+                    <h6>Player 2: <Clock time={this.props.player2Time} timeOver= {() => this.props.timeOver()} /></h6>
                     <p>Log: {this.props.log_message}</p>
                     </div>
                 </div>

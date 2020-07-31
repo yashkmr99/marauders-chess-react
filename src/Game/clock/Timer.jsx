@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
 
-function parseTime(miliseconds){
-    let seconds = parseInt((miliseconds / 1000) % 60, 10);
-    let minutes = parseInt((miliseconds / (1000 * 60)), 10);
+function parseTime(time){
+    let seconds = parseInt((time % 60), 10);
+    let minutes = parseInt((time / 60), 10);
 
     minutes = (minutes < 10) ? `0${minutes}` : minutes;
     seconds = (seconds < 10) ? `0${seconds}` : seconds;
@@ -19,7 +19,7 @@ export default class Clock extends Component {
 
     componentWillUpdate(nextProps) {
         if (nextProps.time <= 0) {
-        this.props.timeOver();
+            this.props.timeOver();
         }
     }
 

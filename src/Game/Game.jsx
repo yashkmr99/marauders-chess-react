@@ -21,8 +21,8 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
 
-            player1Time: 180000,  //Time in milliseconds
-            player2Time: 180000,
+            player1Time: 1200,  //Time in seconds
+            player2Time: 1200,
         };
     }
 
@@ -35,10 +35,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -58,6 +58,11 @@ export default class Game extends Component {
     // handleMouseUp(){
     //     this.setState({mouseIsPressed: false});
     // }
+    timeOver(){
+        console.log("qw");
+        clearInterval(this.intervalID);
+        this.state.curr_player = -1;
+    }
 
     handleMouseClick(row, col, player){
         let log_message = "clicked row: " + row.toString() + " col: " + col.toString();
@@ -77,9 +82,9 @@ export default class Game extends Component {
 
         else{
             const [isValidMove, new_grid] = checkIfValidMove(this.state.initial_click, row, col, this.state.grid);
+            initial_click = this.state.initial_click;
             if(isValidMove){
                 clearInterval(this.intervalID);
-                
                 log_message += ". Valid move.";
                 this.setState({new_grid});
 
@@ -90,10 +95,10 @@ export default class Game extends Component {
                     let player2Time = this.state.player2Time;
 
                     if(curr_player===1){
-                        player1Time-=1000;
+                        player1Time-=1;
                     }
                     else{
-                        player2Time-=1000;
+                        player2Time-=1;
                     } 
                     this.setState({player1Time, player2Time});
                 },1000);
@@ -117,10 +122,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -138,10 +143,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -159,10 +164,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -180,10 +185,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -201,10 +206,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -222,10 +227,10 @@ export default class Game extends Component {
             let player2Time = this.state.player2Time;
 
             if(curr_player===1){
-                player1Time-=1000;
+                player1Time-=1;
             }
             else{
-                player2Time-=1000;
+                player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
         },1000);
@@ -299,7 +304,8 @@ export default class Game extends Component {
                             log_message = {log_message}
                             player1Time = {player1Time}
                             player2Time = {player2Time}
-                            intervalID = {this.intervalID}/>
+                            intervalID = {this.intervalID}
+                            timeOver = {() => this.timeOver()} />
                 </div>
             </div>
             </>
