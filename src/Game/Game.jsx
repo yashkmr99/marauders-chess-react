@@ -45,21 +45,6 @@ export default class Game extends Component {
             this.setState({player1Time, player2Time});
         },1000);
     }
-
-    // handleMouseDown(row, col){
-    //     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    //     this.setState({grid: newGrid, mouseIsPressed: true});
-    // }
-
-    // handleMouseEnter(row, col){
-    //     if(!this.state.mouseIsPressed) return;
-    //     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    //     this.setState({grid: newGrid});
-    // }
-
-    // handleMouseUp(){
-    //     this.setState({mouseIsPressed: false});
-    // }
     
     
     handleMouseClick(row, col, player){
@@ -94,6 +79,7 @@ export default class Game extends Component {
                 curr_player = 3 - curr_player;
                 
                 this.intervalID = setInterval(()=>{
+                    curr_player = this.state.curr_player;
                     let player1Time = this.state.player1Time;
                     let player2Time = this.state.player2Time;
 
@@ -145,12 +131,9 @@ export default class Game extends Component {
         const player1Time = parseInt(timeLimitEntered) * 60;
         const player2Time = parseInt(timeLimitEntered) * 60;
         const gameRunning = true;
-        this.setState({player1Time, player2Time, gameRunning});
         const grid = getInitialGrid();
         const curr_player = 1;
-        this.setState({grid, curr_player});
-        // window.location.reload(false);
-        // alert('New game started with time limit (minutes): ' + timeLimitEntered);
+        this.setState({grid, curr_player, player1Time, player2Time, gameRunning});
     }
 
     timeOver(){
@@ -170,8 +153,6 @@ export default class Game extends Component {
             <>
             <HeadingNav gameRunning = {this.state.gameRunning}
                         quitGame = {this.quitGame}/>
-            {/* <div>Player1 Time:<Clock time={player1Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div>
-            <div>Player2 Time:<Clock time={player2Time} timeOver= {() => {clearInterval(this.intervalID);}} /> </div> */}
             <div class = "container-fluid">
             <div class="row">
                 <div class = "col-sm-9" class = "col-md-9" class="col-lg-9">
@@ -201,9 +182,6 @@ export default class Game extends Component {
                                                 isBottom = {isBottom}
                                                 isTop = {isTop}
                                                 mouseIsPressed = {mouseIsPressed}
-                                                // onMouseDown = {(row, col) => this.handleMouseDown(row, col)}
-                                                // onMouseEnter = {(row, col) => this.handleMouseEnter(row, col)}
-                                                // onMouseUp = {() => this.handleMouseUp()}
                                                 onClick = {(row, col, player) => this.handleMouseClick(row, col, player)}
                                                 player = {player}
                                                 piece = {piece}
@@ -271,14 +249,3 @@ const createNode = (col, row, isLeft, isRight, isBottom, isTop, player, piece) =
         piece,
     };
 };
-
-// const getNewGridWithWallToggled = (grid, row, col) => {
-//     const newGrid = grid.slice();
-//   const node = newGrid[row][col];
-//   const newNode = {
-//     ...node,
-//     isWall: !node.isWall,
-//   };
-//   newGrid[row][col] = newNode;
-//   return newGrid;
-// };

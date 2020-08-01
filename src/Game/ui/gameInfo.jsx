@@ -9,7 +9,7 @@ class GameInfo extends Component {
         const curr_player_var = this.props.curr_player;
         return (
             <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
-                {curr_player_var == 1
+                {curr_player_var === 1
                 ? <><div class="rounded bg-gradient-1 text-white shadow mt-2 p-3 pl-6 pr-6 text-center mb-2">
                     <p class="mb-2 font-weight-bold text-uppercase">Player 1</p>
                     <div id="clock-b" class="countdown-circles d-flex flex-wrap justify-content-center pt-4">
