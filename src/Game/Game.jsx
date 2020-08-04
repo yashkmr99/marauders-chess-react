@@ -36,7 +36,7 @@ export default class Game extends Component {
             let player1Time = this.state.player1Time;
             let player2Time = this.state.player2Time;
 
-            if(curr_player===1){
+            if(this.state.curr_player===1){
                 player1Time-=1;
             }
             else{
@@ -79,11 +79,10 @@ export default class Game extends Component {
                 curr_player = 3 - curr_player;
                 
                 this.intervalID = setInterval(()=>{
-                    curr_player = this.state.curr_player;
                     let player1Time = this.state.player1Time;
                     let player2Time = this.state.player2Time;
 
-                    if(curr_player===1){
+                    if(this.state.curr_player===1){
                         player1Time-=1;
                     }
                     else{
@@ -114,7 +113,7 @@ export default class Game extends Component {
             let player1Time = this.state.player1Time;
             let player2Time = this.state.player2Time;
 
-            if(curr_player===1){
+            if(this.state.curr_player===1){
                 player1Time-=1;
             }
             else{
