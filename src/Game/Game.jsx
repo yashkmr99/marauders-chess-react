@@ -10,6 +10,10 @@ import GameInfo from './ui/gameInfo.jsx';
 import "bootstrap/dist/css/bootstrap.min.css";
 import OutsideGame from './ui/outsideGame.jsx';
 
+import io from 'socket.io-client';
+//192.168.43.251
+var serverURI = 'http://localhost:3001'; 
+
 export default class Game extends Component {
     constructor() {
         super();
@@ -31,6 +35,22 @@ export default class Game extends Component {
     componentDidMount(){
         const grid = getInitialGrid();
         const curr_player = 1;
+        this.socket  = io(serverURI);
+        this.socket.on('connect', () => {
+            console.log("socket connected"); 
+            this.socket.on('user',(data)=>{
+                this.user = data;
+                ///Make user friendly
+                let color = (this.user===1)?"white":"black";
+                console.log("Nigga u "+color);
+            });
+            this.socket.on('board changed',(state)=>{
+                console.log(state);
+                this.setState(state);
+            });
+        });
+
+
         this.setState({grid, curr_player});
         this.intervalID = setInterval(()=>{
             let player1Time = this.state.player1Time;
@@ -53,7 +73,10 @@ export default class Game extends Component {
         let log_message = "";
         let initial_click = [-1, -1];
         let curr_player = this.state.curr_player;
-        
+        if(this.user !== curr_player)
+        {
+            return;
+        }
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
             // log_message += ". Player " + player.toString() + " piece selected.";
@@ -74,7 +97,7 @@ export default class Game extends Component {
                 clearInterval(this.intervalID);
                 initial_click = [-1,-1];
                 log_message += "Valid move";
-                this.setState({new_grid});
+                this.setState({new_grid},()=>this.socket.emit('move made',this.state));
 
                 curr_player = 3 - curr_player;
                 
@@ -95,7 +118,7 @@ export default class Game extends Component {
             
         }
 
-        this.setState({log_message, initial_click, curr_player});
+        this.setState({log_message, initial_click, curr_player},()=>this.socket.emit('move made',this.state));
         if(piece_killed === 'king'){
             this.quitGame();
             alert('Game Over: Player ' + (3-curr_player) + ' won !!');
@@ -104,8 +127,12 @@ export default class Game extends Component {
 
     // Roatating also constitues 1 move
     rotate(a,b){
-        const newGrid = getNewGridWithRotated(this.state.grid,a,b);
         let curr_player = this.state.curr_player;
+        if(this.user !== curr_player)
+        {
+            return;
+        }
+        const newGrid = getNewGridWithRotated(this.state.grid,a,b);
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
                 
@@ -122,7 +149,7 @@ export default class Game extends Component {
             this.setState({player1Time, player2Time});
         },1000);
 
-        this.setState({grid: newGrid, curr_player});
+        this.setState({grid: newGrid, curr_player},()=>this.socket.emit('move made',this.state));
     }
 
     startSamePC(timeLimitEntered){
