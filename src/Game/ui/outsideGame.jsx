@@ -25,16 +25,16 @@ class OutsideGame extends Component {
     //     event.preventDefault();
     // }
 
-    startNewRoom(){
+    // startNewRoom(){
 
-    }
+    // }
 
     render(){
         return (
         <>  
         <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
 
-            <form class="mt-3">
+            <form class="mt-3" onSubmit={(e)=>e.preventDefault()}>
                 <label>
                 Enter time limit (minutes):
                 <br></br>
@@ -48,7 +48,7 @@ class OutsideGame extends Component {
                         Start
             </button>
             <p class = "h5 font-weight-bold">Different PC</p>
-            <button type="button" class="btn btn-secondary btn-sm ml-5 mr-5" onClick = {() => this.startNewRoom()}>
+            <button type="button" class="btn btn-secondary btn-sm ml-5 mr-5" onClick = {() => this.props.startNewRoom()}>
                         Create Room
             </button>
             <form class="mt-3" onSubmit={(e)=>{

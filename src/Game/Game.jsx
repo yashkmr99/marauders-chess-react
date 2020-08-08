@@ -39,7 +39,7 @@ export default class Game extends Component {
 
         this.setState({grid, curr_player});
 
-        if(this.state.samePC)
+        if(!this.state.samePC)
         {
             this.intervalID = setInterval(()=>{
                 let player1Time = this.state.player1Time;
@@ -63,9 +63,9 @@ export default class Game extends Component {
         let log_message = "";
         let initial_click = [-1, -1];
         let curr_player = this.state.curr_player;
-        if(!this.state.samePC)
+        if(!this.state.gameRunning || !this.state.samePC)
         {
-            if(this.user !== curr_player)   {return;}
+            if(!this.state.gameRunning || this.user !== curr_player)   {return;}
         }
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
@@ -118,9 +118,9 @@ export default class Game extends Component {
     // Roatating also constitues 1 move
     rotate(a,b){
         let curr_player = this.state.curr_player;
-        if(!this.state.samePC)
+        if(!this.state.gameRunning || !this.state.samePC)
         {
-            if(this.user !== curr_player)   {return;}
+            if(!this.state.gameRunning || this.user !== curr_player)   {return;}
         }
         
         const newGrid = getNewGridWithRotated(this.state.grid,a,b);
@@ -160,15 +160,17 @@ export default class Game extends Component {
                 this.user = data;
                 console.log(data);
                 this.setState(state);
-                ///Make user friendly
+                /*
+                    Make below display of who is white and black user friendly
+                */
                 let color = (this.user===1)?"white":"black";
-                console.log("Nigga u "+color);
+                alert("Nigga u "+color);
 
                 this.socket.on('second joined',()=>{
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
                         let player2Time = this.state.player2Time;
-            
+
                         if(this.state.curr_player===1){
                             player1Time-=1;
                         }
@@ -184,6 +186,11 @@ export default class Game extends Component {
                 this.setState(state);
             });
         });
+    }
+
+    startNewRoom(){
+        alert("Bitch your room id is 987");
+        this.joinRoom(987);
     }
 
     startSamePC(timeLimitEntered){
@@ -270,7 +277,9 @@ export default class Game extends Component {
                                 player1Time = {player1Time}
                                 player2Time = {player2Time}
                                 timeOver = {() => this.timeOver()} />
-                : <OutsideGame startSamePC={this.startSamePC} joinRoom={(roomId)=>this.joinRoom(roomId)} />}
+                : <OutsideGame startSamePC={this.startSamePC} 
+                                joinRoom={(roomId)=>this.joinRoom(roomId)} 
+                                startNewRoom={()=>this.startNewRoom()} />}
                 </div>
             </div>
             </>
