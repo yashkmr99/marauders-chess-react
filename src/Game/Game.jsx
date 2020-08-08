@@ -25,6 +25,7 @@ export default class Game extends Component {
             initial_click: [-1,-1],
             gameRunning: false,
 
+            samePC: true,
             player1Time: 1200,  //Time in seconds
             player2Time: 1200,
         };
@@ -35,35 +36,24 @@ export default class Game extends Component {
     componentDidMount(){
         const grid = getInitialGrid();
         const curr_player = 1;
-        this.socket  = io(serverURI);
-        this.socket.on('connect', () => {
-            console.log("socket connected"); 
-            this.socket.on('user',(data)=>{
-                this.user = data;
-                ///Make user friendly
-                let color = (this.user===1)?"white":"black";
-                console.log("Nigga u "+color);
-            });
-            this.socket.on('board changed',(state)=>{
-                console.log(state);
-                this.setState(state);
-            });
-        });
-
 
         this.setState({grid, curr_player});
-        this.intervalID = setInterval(()=>{
-            let player1Time = this.state.player1Time;
-            let player2Time = this.state.player2Time;
 
-            if(this.state.curr_player===1){
-                player1Time-=1;
-            }
-            else{
-                player2Time-=1;
-            } 
-            this.setState({player1Time, player2Time});
-        },1000);
+        if(this.state.samePC)
+        {
+            this.intervalID = setInterval(()=>{
+                let player1Time = this.state.player1Time;
+                let player2Time = this.state.player2Time;
+
+                if(this.state.curr_player===1){
+                    player1Time-=1;
+                }
+                else{
+                    player2Time-=1;
+                } 
+                this.setState({player1Time, player2Time});
+            },1000);
+        }
     }
     
     
@@ -73,9 +63,9 @@ export default class Game extends Component {
         let log_message = "";
         let initial_click = [-1, -1];
         let curr_player = this.state.curr_player;
-        if(this.user !== curr_player)
+        if(!this.state.samePC)
         {
-            return;
+            if(this.user !== curr_player)   {return;}
         }
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
@@ -97,7 +87,7 @@ export default class Game extends Component {
                 clearInterval(this.intervalID);
                 initial_click = [-1,-1];
                 log_message += "Valid move";
-                this.setState({new_grid},()=>this.socket.emit('move made',this.state));
+                this.setState({new_grid},()=>{if(!this.state.samePC){this.socket.emit('move made',this.state)}});
 
                 curr_player = 3 - curr_player;
                 
@@ -118,7 +108,7 @@ export default class Game extends Component {
             
         }
 
-        this.setState({log_message, initial_click, curr_player},()=>this.socket.emit('move made',this.state));
+        this.setState({log_message, initial_click, curr_player},()=>{if(!this.state.samePC){this.socket.emit('move made',this.state)}});
         if(piece_killed === 'king'){
             this.quitGame();
             alert('Game Over: Player ' + (3-curr_player) + ' won !!');
@@ -128,10 +118,11 @@ export default class Game extends Component {
     // Roatating also constitues 1 move
     rotate(a,b){
         let curr_player = this.state.curr_player;
-        if(this.user !== curr_player)
+        if(!this.state.samePC)
         {
-            return;
+            if(this.user !== curr_player)   {return;}
         }
+        
         const newGrid = getNewGridWithRotated(this.state.grid,a,b);
         clearInterval(this.intervalID);
         curr_player = 3 - curr_player;
@@ -149,7 +140,50 @@ export default class Game extends Component {
             this.setState({player1Time, player2Time});
         },1000);
 
-        this.setState({grid: newGrid, curr_player},()=>this.socket.emit('move made',this.state));
+        this.setState({grid: newGrid, curr_player},()=>{if(!this.state.samePC){this.socket.emit('move made',this.state)}});
+    }
+
+    joinRoom(roomId)
+    {
+        console.log(roomId);
+        this.socket  = io(serverURI);
+        
+        const samePC = false;
+        const gameRunning = true;
+        const grid = getInitialGrid();
+        const curr_player = 1;
+        this.setState({grid, curr_player, gameRunning, samePC});
+        this.socket.on('connect', () => {
+            console.log("socket connected");
+            this.socket.emit('send roomId',roomId,this.state); 
+            this.socket.on('user',(data,state)=>{
+                this.user = data;
+                console.log(data);
+                this.setState(state);
+                ///Make user friendly
+                let color = (this.user===1)?"white":"black";
+                console.log("Nigga u "+color);
+
+                this.socket.on('second joined',()=>{
+                    this.intervalID = setInterval(()=>{
+                        let player1Time = this.state.player1Time;
+                        let player2Time = this.state.player2Time;
+            
+                        if(this.state.curr_player===1){
+                            player1Time-=1;
+                        }
+                        else{
+                            player2Time-=1;
+                        } 
+                        this.setState({player1Time, player2Time});
+                    },1000);
+                })
+            });
+            this.socket.on('board changed',(state)=>{
+                // console.log(state);
+                this.setState(state);
+            });
+        });
     }
 
     startSamePC(timeLimitEntered){
@@ -236,7 +270,7 @@ export default class Game extends Component {
                                 player1Time = {player1Time}
                                 player2Time = {player2Time}
                                 timeOver = {() => this.timeOver()} />
-                : <OutsideGame startSamePC={this.startSamePC}/>}
+                : <OutsideGame startSamePC={this.startSamePC} joinRoom={(roomId)=>this.joinRoom(roomId)} />}
                 </div>
             </div>
             </>
