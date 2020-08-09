@@ -148,11 +148,6 @@ export default class Game extends Component {
         console.log(roomId);
         this.socket  = io(serverURI);
         
-        const samePC = false;
-        const gameRunning = true;
-        const grid = getInitialGrid();
-        const curr_player = 1;
-        this.setState({grid, curr_player, gameRunning, samePC});
         this.socket.on('connect', () => {
             console.log("socket connected");
             this.socket.emit('send roomId',roomId,this.state); 
@@ -179,7 +174,7 @@ export default class Game extends Component {
                         } 
                         this.setState({player1Time, player2Time});
                     },1000);
-                })
+                });
             });
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
@@ -189,8 +184,50 @@ export default class Game extends Component {
     }
 
     startNewRoom(){
-        alert("Bitch your room id is 987");
-        this.joinRoom(987);
+        this.socket  = io(serverURI);
+        
+        const samePC = false;
+        const gameRunning = true;
+        const grid = getInitialGrid();
+        const curr_player = 1;
+        this.setState({grid, curr_player, gameRunning, samePC});
+        this.socket.on('connect', () => {
+            console.log("socket connected");
+            this.socket.emit('create room',this.state);
+            this.socket.on('room created',(roomId)=>{
+                alert('Bitch roomId is '+roomId);
+            }); 
+            this.socket.on('user',(data,state)=>{
+                this.user = data;
+                console.log(data);
+                this.setState(state);
+                /*
+                    Make below display of who is white and black user friendly
+                */
+                let color = (this.user===1)?"white":"black";
+                alert("Nigga u "+color);
+                
+                this.socket.on('second joined',()=>{
+                    this.intervalID = setInterval(()=>{
+                        let player1Time = this.state.player1Time;
+                        let player2Time = this.state.player2Time;
+
+                        if(this.state.curr_player===1){
+                            player1Time-=1;
+                        }
+                        else{
+                            player2Time-=1;
+                        } 
+                        this.setState({player1Time, player2Time});
+                    },1000);
+                });
+            });
+        
+            this.socket.on('board changed',(state)=>{
+                // console.log(state);
+                this.setState(state);
+            });
+        });
     }
 
     startSamePC(timeLimitEntered){
