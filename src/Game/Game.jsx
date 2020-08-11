@@ -11,7 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import OutsideGame from './ui/outsideGame.jsx';
 
 import io from 'socket.io-client';
-//192.168.43.251
+
 var serverURI = 'http://localhost:3001'; 
 
 export default class Game extends Component {
