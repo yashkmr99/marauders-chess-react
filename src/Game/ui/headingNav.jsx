@@ -82,11 +82,11 @@ class AboutModal extends Component {
                         <p class="h5" class="font-weight-bold"><a href="https://github.com/yashkmr99/marauders-chess-react"  target="_blank">Github Link</a></p>
                         <h4 class="font-weight-bold">Contributors</h4>
                         <p class="h3" class="font-weight-bold">
-                            Yash Kumar <a href = "https://github.com/yashkmr99"><i class = "fa fa-github"></i></a>
+                            Yash Kumar <a href = "https://github.com/yashkmr99" target="_blank" rel="noopener noreferrer"><i class = "fa fa-github"></i></a>
                             <br></br>
-                            Suhas Prabhandam <a href = "https://github.com/Suhas1998"><i class = "fa fa-github"></i></a>
+                            Suhas Prabhandam <a href = "https://github.com/Suhas1998" target="_blank" rel="noopener noreferrer"><i class = "fa fa-github"></i></a>
                             <br></br>
-                            Prathik S Nayak <a href = "https://github.com/PSN221B"><i class = "fa fa-github"></i></a>
+                            Prathik S Nayak <a href = "https://github.com/PSN221B" target="_blank" rel="noopener noreferrer"><i class = "fa fa-github"></i></a>
                             
                         </p>
                     </Modal.Body>
