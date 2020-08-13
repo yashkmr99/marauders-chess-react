@@ -35,12 +35,11 @@ export default class Game extends Component {
 
     componentDidMount(){
         const grid = getInitialGrid();
-        const curr_player = 1;
 
-        this.setState({grid, curr_player});
-
+        this.setState({grid});
         if(!this.state.samePC)
         {
+            this.setState({curr_player:1});
             this.intervalID = setInterval(()=>{
                 let player1Time = this.state.player1Time;
                 let player2Time = this.state.player2Time;
@@ -162,6 +161,7 @@ export default class Game extends Component {
                 alert("Nigga u "+color);
 
                 this.socket.on('second joined',()=>{
+                    this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
                         let player2Time = this.state.player2Time;
@@ -189,8 +189,8 @@ export default class Game extends Component {
         const samePC = false;
         const gameRunning = true;
         const grid = getInitialGrid();
-        const curr_player = 1;
-        this.setState({grid, curr_player, gameRunning, samePC});
+        // const curr_player = 1;
+        this.setState({grid, gameRunning, samePC});
         this.socket.on('connect', () => {
             console.log("socket connected");
             this.socket.emit('create room',this.state);
@@ -208,6 +208,7 @@ export default class Game extends Component {
                 alert("Nigga u "+color);
                 
                 this.socket.on('second joined',()=>{
+                    this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
                         let player2Time = this.state.player2Time;
