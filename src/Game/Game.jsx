@@ -24,6 +24,7 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
             gameRunning: false,
+            my_color: null,
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -66,6 +67,7 @@ export default class Game extends Component {
         {
             if(!this.state.gameRunning || this.user !== curr_player)   {return;}
         }
+        console.log(player,curr_player);
         // If current player selects one of its pieces. If already selected one, it is overwritten.
         if(player === curr_player){
             // log_message += ". Player " + player.toString() + " piece selected.";
@@ -143,7 +145,7 @@ export default class Game extends Component {
     }
 
     joinRoom(roomId)
-    {
+    {   
         console.log(roomId);
         this.socket  = io(serverURI);
         
@@ -152,14 +154,14 @@ export default class Game extends Component {
             this.socket.emit('send roomId',roomId,this.state); 
             this.socket.on('user',(data,state)=>{
                 this.user = data;
+                console.log("This data");
                 console.log(data);
                 this.setState(state);
                 /*
                     Make below display of who is white and black user friendly
                 */
                 let color = (this.user===1)?"white":"black";
-                alert("Nigga u "+color);
-
+                
                 this.socket.on('second joined',()=>{
                     this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
@@ -204,9 +206,8 @@ export default class Game extends Component {
                 /*
                     Make below display of who is white and black user friendly
                 */
-                let color = (this.user===1)?"white":"black";
-                alert("Nigga u "+color);
-                
+                let color = (this.user===1)?"white":"black"; 
+
                 this.socket.on('second joined',()=>{
                     this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
@@ -223,7 +224,7 @@ export default class Game extends Component {
                     },1000);
                 });
             });
-        
+            
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
                 this.setState(state);

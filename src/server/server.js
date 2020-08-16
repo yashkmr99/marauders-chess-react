@@ -1,6 +1,8 @@
 const server = require('http').createServer();
 const io = require('socket.io')(server);
 
+// sudo kill $(sudo lsof -t -i:3001) to kill the ports
+
 /*
   users code
   0 - no user present

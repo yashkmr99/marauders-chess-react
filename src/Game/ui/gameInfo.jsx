@@ -7,6 +7,7 @@ import whitebg from '../../static/whitebg.jpg';
 class GameInfo extends Component {
     render(){
         const curr_player_var = this.props.curr_player;
+
         return (
             <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
                 {curr_player_var === 1
@@ -37,14 +38,12 @@ class GameInfo extends Component {
                 }
                 <div class="card profile-card-1">
     		        {/* <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg" alt="profile-sample1" class="background"/> */}
-    		        {curr_player_var == 2 
-                    ? <img src={blackbg} alt="profile-image" class="profile"/>
-                    : <img src={whitebg} alt="profile-image" class="profile2"/>
-                    }
+                    <h5 class="font-weight-bold" >Game Room Id: </h5>
+
+                    <h5 class="font-weight-bold" >You are playing as </h5>
                     <div class="card-content">
-                    <br></br>
-                    <h5 class="font-weight-bold">Current Player: {this.props.curr_player}</h5>
-                    <p class="mb-0 font-weight-bold text-uppercase">Log:
+                        <h5 class="font-weight-bold">{this.props.curr_player}</h5>
+                        <p class="mb-0 font-weight-bold text-uppercase">Log:
                         <br></br>
                         {this.props.log_message}</p>
                     </div>
