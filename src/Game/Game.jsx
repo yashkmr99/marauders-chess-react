@@ -24,6 +24,7 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
             gameRunning: false,
+            Id : 0,
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -187,6 +188,7 @@ export default class Game extends Component {
     startNewRoom(){
         this.socket  = io(serverURI);
         
+        let Id = 0;
         const samePC = false;
         const gameRunning = true;
         const grid = getInitialGrid();
@@ -196,7 +198,9 @@ export default class Game extends Component {
             console.log("socket connected");
             this.socket.emit('create room',this.state);
             this.socket.on('room created',(roomId)=>{
-                alert('Bitch roomId is '+roomId);
+                Id = roomId;
+                alert('Bitch roomId is '+Id);  
+                this.setState({Id});              
             }); 
             this.socket.on('user',(data,state)=>{
                 this.user = data;
@@ -223,6 +227,7 @@ export default class Game extends Component {
                     },1000);
                 });
             });
+            
             
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
