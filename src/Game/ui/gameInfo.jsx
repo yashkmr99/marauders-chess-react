@@ -8,6 +8,8 @@ class GameInfo extends Component {
     render(){
         const curr_player_var = this.props.curr_player;
 
+        const player_color = this.props.my_color;
+
         return (
             <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
                 {curr_player_var === 1
@@ -40,9 +42,9 @@ class GameInfo extends Component {
     		        {/* <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg" alt="profile-sample1" class="background"/> */}
                     <h5 class="font-weight-bold" >Game Room Id: </h5>
 
-                    <h5 class="font-weight-bold" >You are playing as </h5>
+                    <h5 class="font-weight-bold" >You are playing as : {player_color==1?"White":"Black"} </h5>
                     <div class="card-content">
-                        <h5 class="font-weight-bold">{this.props.curr_player}</h5>
+                        <h5 class="font-weight-bold">{this.props.curr_player == player_color? "Your Turn": "Opponent Turn"}</h5>
                         <p class="mb-0 font-weight-bold text-uppercase">Log:
                         <br></br>
                         {this.props.log_message}</p>

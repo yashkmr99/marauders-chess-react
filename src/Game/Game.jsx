@@ -24,7 +24,6 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
             gameRunning: false,
-            my_color: null,
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -255,6 +254,7 @@ export default class Game extends Component {
 
     render(){
         const {grid, mouseIsPressed, curr_player, log_message, player1Time, player2Time} = this.state;
+        
         return (
             <>
             <HeadingNav gameRunning = {this.state.gameRunning}
@@ -312,6 +312,7 @@ export default class Game extends Component {
                 </div>
                 {this.state.gameRunning
                 ? <GameInfo   curr_player = {curr_player}
+                                my_color = {this.user}
                                 log_message = {log_message}
                                 player1Time = {player1Time}
                                 player2Time = {player2Time}
