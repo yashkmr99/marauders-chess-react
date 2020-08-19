@@ -24,6 +24,7 @@ export default class Game extends Component {
             log_message: "",
             initial_click: [-1,-1],
             gameRunning: false,
+            Id: 0,
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -152,13 +153,12 @@ export default class Game extends Component {
             this.socket.emit('send roomId',roomId,this.state); 
             this.socket.on('user',(data,state)=>{
                 this.user = data;
-                console.log(data);
                 this.setState(state);
+                this.setState({Id: parseInt(roomId)});
                 /*
                     Make below display of who is white and black user friendly
                 */
                 let color = (this.user===1)?"white":"black";
-                alert("Nigga u "+color);
 
                 this.socket.on('second joined',()=>{
                     this.setState({curr_player:1});
@@ -195,17 +195,17 @@ export default class Game extends Component {
             console.log("socket connected");
             this.socket.emit('create room',this.state);
             this.socket.on('room created',(roomId)=>{
-                alert('Bitch roomId is '+roomId);
+
+                this.setState({Id: roomId});
             }); 
             this.socket.on('user',(data,state)=>{
                 this.user = data;
                 console.log(data);
-                this.setState(state);
+                // this.setState(state);
                 /*
                     Make below display of who is white and black user friendly
                 */
                 let color = (this.user===1)?"white":"black";
-                alert("Nigga u "+color);
                 
                 this.socket.on('second joined',()=>{
                     this.setState({curr_player:1});
@@ -224,6 +224,7 @@ export default class Game extends Component {
                 });
             });
         
+
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
                 this.setState(state);
@@ -253,7 +254,8 @@ export default class Game extends Component {
     }
 
     render(){
-        const {grid, mouseIsPressed, curr_player, log_message, player1Time, player2Time} = this.state;
+        const {grid, mouseIsPressed, curr_player, Id, log_message, player1Time, player2Time} = this.state;
+        
         return (
             <>
             <HeadingNav gameRunning = {this.state.gameRunning}
@@ -311,6 +313,8 @@ export default class Game extends Component {
                 </div>
                 {this.state.gameRunning
                 ? <GameInfo   curr_player = {curr_player}
+                                my_color = {this.user}
+                                roomId = {Id}
                                 log_message = {log_message}
                                 player1Time = {player1Time}
                                 player2Time = {player2Time}
