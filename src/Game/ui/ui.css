@@ -318,3 +318,32 @@
 .oneline {
   display: inline-block;
  }
+
+.modal-dialog{
+  max-width: 1000px !important;
+}
+
+ .carousel-control-prev-icon,
+ .carousel-control-next-icon {
+    font-size: 55px;
+    color: black;
+    background-image: none !important ;
+ }
+ 
+ .carousel-control-next-icon:after
+ {
+  content: '>';
+ }
+ 
+ .carousel-control-prev-icon:after {
+   content: '<';
+ }
+
+ .carousel-item{
+   height: 600px;
+   padding: 0 100px;
+ }
+
+ .carousel-item h3{
+  text-align: center; 
+ }

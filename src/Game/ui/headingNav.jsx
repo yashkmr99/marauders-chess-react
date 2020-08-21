@@ -139,15 +139,39 @@ class RulesModal extends Component {
 						<Modal.Title>Rules</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-                        <p>
-                            Write rules over here.
-                        </p>
+						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval= "false" data-wrap="false">
+							<div class="carousel-inner">
+								<div class="carousel-item active">
+									<h3>Basic Instructions</h3>
+									<ul>
+										<li>Marauders Chess is a strategic game, where the players play against each other with an objective to kill the opponent’s King passing through various mazes.</li>
+										<li>The Main Board consists of 6 smaller rotatable boards, each having a 5x5 maze with some walls restricting the movement of the pieces.</li>
+										<li>In each turn, a player can choose to either move one of his pieces or rotate one of the 6 boards (Clockwise).</li>
+										<li>The game ends if one of the player kills the opponents King or the time of one of the players completely drains out.</li>
+									</ul>
+								</div>
+								<div class="carousel-item">
+									<h3>Valid Moves of Pieces</h3>
+									<ul>
+										<li>All the moves of the pieces are same as traditional chess pieces.</li>
+										<li>A Rook, King and Bishop can not move if a wall is blocking in its direction of movement where as a Knight has the ability to cross atmost 1 wall in their movement.</li>
+										<li>The move of a Knight is considered as two steps in one direction and then one step in perpendicular direction forming a L shape. Thus, this path is considered while checking the number of blocking walls in the path.</li>
+									</ul>
+								</div>
+								<div class="carousel-item">
+									<p>Text 3</p>
+								</div>
+							</div>
+							<a class="carousel-control-prev carousel-color" href="#carouselExampleControls" role="button" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="carousel-control-next carousel-color" href="#carouselExampleControls" role="button" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="sr-only">Next</span>
+							</a>
+						</div>
                     </Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={this.handleClose}>
-							Close
-                        </Button>
-					</Modal.Footer>
 				</Modal>
 			</>
 		);

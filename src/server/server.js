@@ -74,7 +74,8 @@ io.on('connection', (socket) => {
     io.to(room[0]).emit('board changed',state);  
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (state) => {
+    console.log(state);
     console.log('user disconnected');
   });
 });  
