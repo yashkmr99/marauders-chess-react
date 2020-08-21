@@ -8,20 +8,33 @@ const io = require('socket.io')(server);
   2 - bothw white and black present
   3 - only black present
 */
-var roomNo = 1;
 var rooms = {
   111:{
     state:null,
     users:0
   }
 };
+
 const PORT = 3001;
+
+// Search for available rooms
+function getRoomId(){
+  var roomId ;
+  for(i=1; ;i++){
+    if(!rooms.hasOwnProperty(i)){
+      roomId = i;
+      break;
+    }
+  }
+  return roomId;
+}
 
 io.on('connection', (socket) => {
   console.log('a user connected');
   // console.log(roomNo);
   socket.on('create room',(state)=>{
-    console.log("New room "+roomNo);
+    var roomNo = getRoomId();
+    console.log(roomNo)
     socket.join(roomNo);
     socket.emit('room created',roomNo);
     rooms[roomNo] = {
@@ -30,7 +43,7 @@ io.on('connection', (socket) => {
       user2:false 
     }
     socket.emit('user',1,rooms[roomNo].state);  
-    roomNo+=1;
+    // roomNo+=1;
   });
 
   socket.on('send roomId',(roomId)=>{    
