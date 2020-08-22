@@ -151,7 +151,7 @@ export default class Game extends Component {
         this.socket.on('connect', () => {
             console.log("socket connected");
             this.socket.emit('send roomId',roomId,this.state); 
-            this.socket.on('user',(data,state)=>{
+            this.socket.once('user',(data,state)=>{
                 this.user = data;
                 this.setState(state);
                 this.setState({Id: parseInt(roomId)});
@@ -160,7 +160,7 @@ export default class Game extends Component {
                 */
                 let color = (this.user===1)?"white":"black";
 
-                this.socket.on('second joined',()=>{
+                this.socket.once('second joined',()=>{
                     this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
@@ -179,6 +179,10 @@ export default class Game extends Component {
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
                 this.setState(state);
+            });
+            this.socket.on('opponent quit',()=>{
+                this.quitGame();
+                alert('Opponent quits: You won !!');        
             });
         });
     }
@@ -198,7 +202,7 @@ export default class Game extends Component {
 
                 this.setState({Id: roomId});
             }); 
-            this.socket.on('user',(data,state)=>{
+            this.socket.once('user',(data,state)=>{
                 this.user = data;
                 console.log(data);
                 // this.setState(state);
@@ -207,7 +211,7 @@ export default class Game extends Component {
                 */
                 let color = (this.user===1)?"white":"black";
                 
-                this.socket.on('second joined',()=>{
+                this.socket.once('second joined',()=>{
                     this.setState({curr_player:1});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
@@ -229,6 +233,10 @@ export default class Game extends Component {
                 // console.log(state);
                 this.setState(state);
             });
+            this.socket.on('opponent quit',()=>{
+                this.quitGame();
+                alert('Opponent quits: You won !!');        
+            });
         });
     }
 
@@ -243,13 +251,14 @@ export default class Game extends Component {
     }
 
     timeOver(){
-        clearInterval(this.intervalID);
         let p_won = this.state.curr_player===1 ? 'Player 2' : 'Player 1';
         this.quitGame();
         alert('Time Up: ' + p_won + ' won !!');
     }
 
     quitGame(){
+        clearInterval(this.intervalID);
+        this.socket.disconnect(true);
         this.setState({gameRunning: false});
     }
 

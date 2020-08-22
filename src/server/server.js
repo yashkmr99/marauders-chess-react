@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
 
     // Assign randomly if user will be black or white 
     let user = Math.floor(Math.random() * 2)+1;
-    console.log('colour assigned: '+user);
+    // console.log('colour assigned: '+user);
     rooms[roomNo] = {
       state,
       user1:(user===1)?true:false,
@@ -44,21 +44,25 @@ io.on('connection', (socket) => {
 
   socket.on('send roomId',(roomId)=>{    
     if(roomId in rooms){
-      console.log(roomId+' room present');
+      console.log('room '+roomId+' present');
       socket.join(roomId);
       if(rooms[roomId].user1 && rooms[roomId].user2){
         // If both users are already connected, disconnect the socket
-        console.log('room full'); //***MAKE USER FRIENDLY */
+        console.log('room '+roomId+' full'); //***MAKE USER FRIENDLY */
         socket.disconnect(true);
       }
-      let user = (rooms[roomId].user1)?2:1;
-      rooms[roomId] = {
-        ...rooms[roomId],
-        user1:true,
-        user2:true
-      }; 
-      socket.emit('user',user,rooms[roomId].state);
-      io.to(roomId).emit('second joined'); 
+      else
+      {
+        let user = (rooms[roomId].user1)?2:1;
+        rooms[roomId] = {
+          ...rooms[roomId],
+          user1:true,
+          user2:true
+        }; 
+        socket.emit('user',user,rooms[roomId].state);
+        io.to(roomId).emit('second joined'); 
+        console.log(Object.keys(rooms));
+      }
     }
     else{
       // When a room with this ID is not created 
@@ -69,13 +73,33 @@ io.on('connection', (socket) => {
   // When some move is made
   socket.on('move made',(state)=>{
     // Send all players belonging to same room the new state of the game
-    let room = Object.keys(socket.rooms);
+    const room = Object.keys(socket.rooms);
     console.log('Move made in room '+room[0]);
     io.to(room[0]).emit('board changed',state);  
   });
 
-  socket.on('disconnect', (state) => {
-    console.log(state);
+  socket.on('disconnecting', () => {
+    // When socket is disconnecting, check which room it belongs to
+    const room = Object.keys(socket.rooms);
+    // Get all the sockets belonging to that room
+    const socketIDs = Object.keys(io.sockets.adapter.rooms[room[0]].sockets);
+    
+    if(socketIDs.length===1){
+      // If only one socket belongs to the room, delete the room
+      console.log('room '+room[0]+' deleted');
+      delete rooms[room[0]]; 
+      console.log(Object.keys(rooms));
+    }
+    else{
+      // If 2 sockets belong to that room, tell the other socket that opponent has quit
+      io.to(socketIDs[0]===socket.id?socketIDs[1]:socketIDs[0]).emit('opponent quit');
+    }
+    
+  });
+
+  socket.on('disconnect', (msg) => {
+    // console.log(msg);
+
     console.log('user disconnected');
   });
 });  
