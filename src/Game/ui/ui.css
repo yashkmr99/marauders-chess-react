@@ -347,3 +347,27 @@
  .carousel-item h3{
   text-align: center; 
  }
+
+.btn-menu{
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-cards{
+  display: flex;
+  
+}
+
+.player-cards .card{
+  display: grid;
+  width: 45%;
+  padding: 5% 10%;
+  justify-items: center;
+}
+
+.vs{
+  display: grid;
+  align-items: center;
+  width: 10%;
+  text-align: center;
+}

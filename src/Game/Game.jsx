@@ -154,6 +154,7 @@ export default class Game extends Component {
             this.socket.once('user',(data,state)=>{
                 this.user = data;
                 this.setState(state);
+                console.log("Changing color");
                 this.setState({Id: parseInt(roomId)});
                 /*
                     Make below display of who is white and black user friendly
@@ -187,19 +188,26 @@ export default class Game extends Component {
         });
     }
 
-    startNewRoom(){
-        this.socket  = io(serverURI);
-        
+    resetRoomState(){
         const samePC = false;
         const gameRunning = true;
         const grid = getInitialGrid();
+        const player1Time= 1200;  //Time in seconds
+        const player2Time= 1200;
         // const curr_player = 1;
-        this.setState({grid, gameRunning, samePC});
+        this.user = this.user == 1? 0: 1;
+        this.setState({grid, gameRunning, samePC, player1Time, player2Time});
+    }
+
+    startNewRoom(){
+        this.socket  = io(serverURI);
+        
+        this.resetRoomState();
+        this.user = 0;
         this.socket.on('connect', () => {
             console.log("socket connected");
             this.socket.emit('create room',this.state);
             this.socket.on('room created',(roomId)=>{
-
                 this.setState({Id: roomId});
             }); 
             this.socket.once('user',(data,state)=>{
@@ -257,7 +265,9 @@ export default class Game extends Component {
     }
 
     quitGame(){
+        console.log(this.intervalID);
         clearInterval(this.intervalID);
+        console.log(this.intervalID);
         this.socket.disconnect(true);
         this.setState({gameRunning: false});
     }
@@ -327,7 +337,9 @@ export default class Game extends Component {
                                 log_message = {log_message}
                                 player1Time = {player1Time}
                                 player2Time = {player2Time}
-                                timeOver = {() => this.timeOver()} />
+                                timeOver = {() => this.timeOver()}
+                                quitGame = {() => this.quitGame()}
+                                 />
                 : <OutsideGame startSamePC={this.startSamePC} 
                                 joinRoom={(roomId)=>this.joinRoom(roomId)} 
                                 startNewRoom={()=>this.startNewRoom()} />}
