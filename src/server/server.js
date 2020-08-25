@@ -70,6 +70,11 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('player ready', () =>{
+    const room = Object.keys(socket.rooms);
+    socket.broadcast.to(room[0]).emit('player ready');
+  })
+
   // When some move is made
   socket.on('move made',(state)=>{
     // Send all players belonging to same room the new state of the game
@@ -77,6 +82,8 @@ io.on('connection', (socket) => {
     console.log('Move made in room '+room[0]);
     io.to(room[0]).emit('board changed',state);  
   });
+
+  
 
   socket.on('disconnecting', () => {
     // When socket is disconnecting, check which room it belongs to

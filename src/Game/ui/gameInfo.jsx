@@ -12,46 +12,38 @@ class GameInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            show: false,
-        };
 
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
         this.handleQuitGame = this.handleQuitGame.bind(this);
+        this.handleStartGame = this.handleStartGame.bind(this);
 
-    }
-
-    handleShow() {
-        this.setState({ show: true });
-    }
-
-    handleClose(){
-        this.setState({ show: false});
     }
 
     handleQuitGame(){
         this.props.quitGame();
-        this.handleClose();
     }
 
     handleRematch(){
 
     }
 
+    handleStartGame(){
+        this.props.playerReady();
+    }
+
     render(){
         const curr_player_var = this.props.curr_player;
         const roomId = this.props.roomId;
         const player_color = this.props.my_color;
+        const opp_present = this.props.room_full == 2 ? 1 : 0;
         
         return (
             <>
                 <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
                     <div class="btn-menu mt-2">
-                        <button type="button" class="btn btn-warning btn-lg " onClick = {this.handleShow}>
+                        <button type="button" class="btn btn-warning btn-lg " onClick = {this.handleRematch}>
                             New Game
                         </button>
-                        <button type="button" class="btn btn-danger btn-lg " onClick = {() => this.props.quitGame()} >
+                        <button type="button" class="btn btn-danger btn-lg " onClick = {this.handleQuitGame} >
                             Quit Room
                         </button>
                     </div>
@@ -78,7 +70,7 @@ class GameInfo extends Component {
                         {this.props.log_message}</p>
                     </div>
                 </div>
-                <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal show={this.props.curr_player === 0}>
                     <Modal.Header closeButton>
                         <Modal.Title>Game Waiting Room</Modal.Title>
                     </Modal.Header>
@@ -96,7 +88,7 @@ class GameInfo extends Component {
                                     <h1>Vs</h1>
                                 </div>
                                 <div class='card border-0'>
-                                    <img class="card-img-top" src={oppProfile}></img>
+                                    <img class="card-img-top" src={this.props.room_full === 2? oppProfile : inactive}></img>
                                     <div class="card-body">
                                         <h1 class="card-title">Opponent</h1>
                                     </div>
@@ -105,7 +97,7 @@ class GameInfo extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleRematch}>
+                        <Button variant="secondary" onClick={this.handleStartGame}>
                             ReMatch
                         </Button>
                         <Button variant="secondary" onClick={this.handleQuitGame}>
