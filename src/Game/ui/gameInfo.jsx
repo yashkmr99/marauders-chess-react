@@ -15,7 +15,7 @@ class GameInfo extends Component {
 
         this.handleQuitGame = this.handleQuitGame.bind(this);
         this.handleStartGame = this.handleStartGame.bind(this);
-
+        this.handleRematch = this.handleRematch.bind(this);
     }
 
     handleQuitGame(){
@@ -23,7 +23,7 @@ class GameInfo extends Component {
     }
 
     handleRematch(){
-
+        this.props.endGame();
     }
 
     handleStartGame(){
@@ -46,7 +46,7 @@ class GameInfo extends Component {
                         <button type="button" class="btn btn-warning btn-lg " onClick = {this.handleRematch}>
                             New Game
                         </button>
-                        <button type="button" class="btn btn-danger btn-lg " onClick = {this.handleQuitGame} >
+                        <button type="button" class="btn btn-danger btn-lg " onClick = {this.handleQuitGame}>
                             Quit Room
                         </button>
                     </div>
@@ -100,12 +100,10 @@ class GameInfo extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleStartGame}>
-                            ReMatch
-                        </Button>
-                        <Button variant="secondary" onClick={this.handleQuitGame}>
-                            Quit Room
-                        </Button>
+                        { opp_present ? 
+                            <Button variant="secondary" onClick={this.handleStartGame}>Start New Game</Button> : 
+                            <Button variant="secondary" >Wait for Opponent</Button> }
+                        <Button variant="secondary" onClick={this.handleQuitGame}>Quit Room</Button>
                     </Modal.Footer>
                 </Modal>
                 </>

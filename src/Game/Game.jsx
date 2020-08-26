@@ -27,6 +27,7 @@ export default class Game extends Component {
             Id: 0,
             room_full: 0,
             runningSamePc: false,   // game being played is using sockets or on same pc
+            winner_color: 0, // 1: white, 2: black
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -161,16 +162,19 @@ export default class Game extends Component {
                 this.opp_ready = 0;
                 this.setState(state);
                 console.log("Changing color");
+
+                this.setState({gameRunning: true});
                 this.setState({Id: parseInt(roomId), room_full: 2});
                 /*
                     Make below display of who is white and black user friendly
                 */
                 let color = (this.user===1)?"white":"black";
                 
-                this.socket.once('player ready', ()=>{
+                this.socket.on('player ready', ()=>{
                     this.opp_ready = 1;
                     console.log("In socket", this.me_ready, this.opp_ready);
                     if(this.me_ready === 1){
+                        this.resetRoomState();
                         this.setState({curr_player : 1});
                     }
                 });
@@ -191,7 +195,12 @@ export default class Game extends Component {
                     },1000);
                 });
             });
-            
+            this.socket.on('surrender', (loser) =>{
+                let winner = loser == 1 ? 2:1;
+                this.setState({curr_player: 0, winner_color : winner});
+                this.me_ready = 0;
+                this.opp_ready = 0;
+            });
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
                 this.setState(state);
@@ -211,7 +220,9 @@ export default class Game extends Component {
         const player2Time= parseInt(timeLimitEntered) * 60;
         const runningSamePc = false;
         const curr_player = 0;
-        this.user = this.user == 1? 0: 1;
+        console.log(this.user);
+        this.user = this.user == 1? 2: 1;
+        console.log(this.user);
         this.setState({grid, gameRunning, samePC, player1Time, player2Time, runningSamePc, curr_player});
     }
 
@@ -230,16 +241,19 @@ export default class Game extends Component {
             this.socket.once('user',(data,state)=>{
                 this.user = data;
                 console.log(data);
+
+                this.setState({gameRunning: true});
                 // this.setState(state);
                 /*
                     Make below display of who is white and black user friendly
                 */
                 let color = (this.user===1)?"white":"black";
                 
-                this.socket.once('player ready', ()=>{
+                this.socket.on('player ready', ()=>{
                     this.opp_ready = 1;
                     console.log("In socket", this.me_ready, this.opp_ready);
                     if(this.me_ready === 1){
+                        this.resetRoomState();
                         this.setState({curr_player : 1});
                     }
                 });
@@ -262,7 +276,13 @@ export default class Game extends Component {
 
                 
             });
-        
+            this.socket.on('surrender', (loser) =>{
+                let winner = loser == 1 ? 2:1;
+                // console.log("Winner is here");
+                this.setState({curr_player: 0, winner_color : winner});
+                this.me_ready = 0;
+                this.opp_ready = 0;
+            });
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
                 this.setState(state);
@@ -303,6 +323,10 @@ export default class Game extends Component {
         alert('Time Up: ' + p_won + ' won !!');
     }
 
+    endGame(){
+        this.socket.emit('end game', this.user);
+    }
+
     quitGame(){
         console.log(this.intervalID);
         clearInterval(this.intervalID);
@@ -318,6 +342,7 @@ export default class Game extends Component {
         this.socket.emit("player ready");
         if(this.opp_ready === 1){
             console.log("Opponent is also ready");
+            this.resetRoomState();
             this.setState({curr_player : 1});
         }else{
             console.log("Opponent isnt ready");
@@ -397,6 +422,7 @@ export default class Game extends Component {
                                 playerReady = {() => this.playerReady()}
                                 timeOver = {() => this.timeOver()}
                                 quitGame = {() => this.quitGame()}
+                                endGame = {() => this.endGame()}
                                  />
                 : <OutsideGame startSamePC={this.startSamePC} 
                                 joinRoom={(roomId)=>this.joinRoom(roomId)} 

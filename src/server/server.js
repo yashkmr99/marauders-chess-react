@@ -72,6 +72,7 @@ io.on('connection', (socket) => {
 
   socket.on('player ready', () =>{
     const room = Object.keys(socket.rooms);
+    console.log("Player Ready");
     socket.broadcast.to(room[0]).emit('player ready');
   })
 
@@ -83,7 +84,11 @@ io.on('connection', (socket) => {
     io.to(room[0]).emit('board changed',state);  
   });
 
-  
+  socket.on('end game', (loser)=>{
+    const room = Object.keys(socket.rooms);
+    console.log("PLayer Submission", loser);
+    io.to(room[0]).emit('surrender', loser);
+  })
 
   socket.on('disconnecting', () => {
     // When socket is disconnecting, check which room it belongs to
