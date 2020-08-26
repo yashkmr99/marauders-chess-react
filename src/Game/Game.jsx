@@ -26,6 +26,7 @@ export default class Game extends Component {
             gameRunning: false,
             Id: 0,
             room_full: 0,
+            runningSamePc: false,   // game being played is using sockets or on same pc
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -149,6 +150,8 @@ export default class Game extends Component {
         console.log(roomId);
         this.socket  = io(serverURI);
         
+        this.setState({runningSamePc: false});
+
         this.socket.on('connect', () => {
             console.log("socket connected");
             this.socket.emit('send roomId',roomId,this.state); 
@@ -200,21 +203,23 @@ export default class Game extends Component {
         });
     }
 
-    resetRoomState(){
+    resetRoomState(timeLimitEntered){
         const samePC = false;
         const gameRunning = true;
         const grid = getInitialGrid();
-        const player1Time= 1200;  //Time in seconds
-        const player2Time= 1200;
-        // const curr_player = 1;
+        const player1Time= parseInt(timeLimitEntered) * 60;  //Time in seconds
+        const player2Time= parseInt(timeLimitEntered) * 60;
+        const runningSamePc = false;
+        const curr_player = 0;
         this.user = this.user == 1? 0: 1;
-        this.setState({grid, gameRunning, samePC, player1Time, player2Time});
+        this.setState({grid, gameRunning, samePC, player1Time, player2Time, runningSamePc, curr_player});
     }
 
-    startNewRoom(){
+    startNewRoom(timeLimitEntered){
+        if(timeLimitEntered === '') timeLimitEntered = '20';
         this.socket  = io(serverURI);
         
-        this.resetRoomState();
+        this.resetRoomState(timeLimitEntered);
         this.user = 0;
         this.socket.on('connect', () => {
             console.log("socket connected");
@@ -276,7 +281,20 @@ export default class Game extends Component {
         const gameRunning = true;
         const grid = getInitialGrid();
         const curr_player = 1;
-        this.setState({grid, curr_player, player1Time, player2Time, gameRunning});
+        const runningSamePc = true;
+        this.setState({grid, curr_player, player1Time, player2Time, gameRunning, runningSamePc});
+        this.intervalID = setInterval(()=>{
+            let player1Time = this.state.player1Time;
+            let player2Time = this.state.player2Time;
+
+            if(this.state.curr_player===1){
+                player1Time-=1;
+            }
+            else{
+                player2Time-=1;
+            } 
+            this.setState({player1Time, player2Time});
+        },1000);
     }
 
     timeOver(){
@@ -289,7 +307,7 @@ export default class Game extends Component {
         console.log(this.intervalID);
         clearInterval(this.intervalID);
         console.log(this.intervalID);
-        this.socket.disconnect(true);
+        if(this.socket) this.socket.disconnect(true);
         this.setState({gameRunning: false});
     }
 
@@ -371,6 +389,7 @@ export default class Game extends Component {
                                 opp_ready = {this.opp_ready}
                                 room_full = {room_full}
                                 roomId = {Id}
+                                runningSamePc = {this.state.runningSamePc}
                                 
                                 log_message = {log_message}
                                 player1Time = {player1Time}
@@ -381,7 +400,7 @@ export default class Game extends Component {
                                  />
                 : <OutsideGame startSamePC={this.startSamePC} 
                                 joinRoom={(roomId)=>this.joinRoom(roomId)} 
-                                startNewRoom={()=>this.startNewRoom()} />}
+                                startNewRoom={(timeLimitEntered)=>this.startNewRoom(timeLimitEntered)} />}
                 </div>
             </div>
             </>

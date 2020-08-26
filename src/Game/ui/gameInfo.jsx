@@ -37,7 +37,10 @@ class GameInfo extends Component {
         const opp_present = this.props.room_full == 2 ? 1 : 0;
         
         return (
-            <>
+            <>  
+            {! this.props.runningSamePc
+            // If we are playing using sockets
+            ?<>
                 <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
                     <div class="btn-menu mt-2">
                         <button type="button" class="btn btn-warning btn-lg " onClick = {this.handleRematch}>
@@ -105,6 +108,39 @@ class GameInfo extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                </>
+            :
+            // If game played is on same PC (without sockets)
+            <div class="col-sm-3" class="col-md-3" class="col-lg-3" class ="mx-auto">
+                    <div class="btn-menu mt-2">
+                        <button type="button" class="btn btn-danger btn-md " onClick = {this.handleQuitGame} >
+                            Quit Game
+                        </button>
+                    </div>
+                    <div class={"rounded text-white shadow mt-2 p-3 pl-6 pr-6 text-center mb-2 " + (player_color === 1? (curr_player_var === 1? "bg-green":"bg-red" ):"bg-opponent")}>
+                        <p class="mb-2 font-weight-bold text-uppercase" > Player 1 : White </p>
+                        <div id="clock-b" class="countdown-circles d-flex flex-wrap justify-content-center pt-4">
+                            <Clock time={this.props.player1Time} timeOver= {() => this.props.timeOver()} />
+                        </div>
+                    </div>
+                    <div class={"rounded text-white shadow mt-2 p-3 pl-6 pr-6 text-center mb-2 " + (player_color === 2? (curr_player_var === 2? "bg-green":"bg-red" ):"bg-opponent")}>
+                        <p class="mb-2 font-weight-bold text-uppercase"> Player 2 : Black </p>
+                        <div id="clock-b" class="countdown-circles d-flex flex-wrap justify-content-center pt-4">
+                            <Clock time={this.props.player2Time} timeOver= {() => this.props.timeOver()} />
+                        </div>
+                    </div>
+                    <div class="card">
+                        {/* <img src="https://images.pexels.com/photos/946351/pexels-photo-946351.jpeg" alt="profile-sample1" class="background"/> */}
+                        <h5 class="font-weight-bold" >Game Room Id: - </h5>
+                        <h5 class="font-weight-bold" >Current Player : {curr_player_var===1?"White":"Black"} </h5>
+                    </div>
+                    <div class="card profile-card-1 bg-blue">
+                        <p class="mb-0 font-weight-bold text-uppercase">Log:
+                        <br></br>
+                        {this.props.log_message}</p>
+                    </div>
+                </div>
+            }
             </>
         )
     }

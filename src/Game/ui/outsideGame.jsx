@@ -48,7 +48,7 @@ class OutsideGame extends Component {
                         Start
             </button>
             <p class = "h5 font-weight-bold">Different PC</p>
-            <button type="button" class="btn btn-secondary btn-sm ml-5 mr-5" onClick = {() => this.props.startNewRoom()}>
+            <button type="button" class="btn btn-secondary btn-sm ml-5 mr-5" onClick = {() => this.props.startNewRoom(this.state.timeLimitEntered)}>
                         Create Room
             </button>
             <form class="mt-3" onSubmit={(e)=>{
