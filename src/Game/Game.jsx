@@ -28,6 +28,7 @@ export default class Game extends Component {
             room_full: 0,
             runningSamePc: false,   // game being played is using sockets or on same pc
             winner_color: 0, // 1: white, 2: black
+            timeLimit: '20', //In mins
 
             samePC: true,
             player1Time: 1200,  //Time in seconds
@@ -172,14 +173,14 @@ export default class Game extends Component {
                 
                 this.socket.on('player ready', ()=>{
                     this.opp_ready = 1;
-                    console.log("In socket", this.me_ready, this.opp_ready);
+                    console.log("Ready states : ", this.me_ready, this.opp_ready);
                     if(this.me_ready === 1){
-                        this.resetRoomState();
+                        this.resetRoomState(this.timeLimit);
                         this.setState({curr_player : 1});
                     }
                 });
 
-                this.socket.once('second joined',()=>{
+                this.socket.on('second joined',()=>{
                     this.setState({room_full: 2});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
@@ -216,8 +217,10 @@ export default class Game extends Component {
         const samePC = false;
         const gameRunning = true;
         const grid = getInitialGrid();
+
         const player1Time= parseInt(timeLimitEntered) * 60;  //Time in seconds
         const player2Time= parseInt(timeLimitEntered) * 60;
+
         const runningSamePc = false;
         const curr_player = 0;
         console.log(this.user);
@@ -227,9 +230,11 @@ export default class Game extends Component {
     }
 
     startNewRoom(timeLimitEntered){
+        console.log("starting the game: " ,timeLimitEntered);
         if(timeLimitEntered === '') timeLimitEntered = '20';
         this.socket  = io(serverURI);
         
+        this.setState({timeLimit: timeLimitEntered});
         this.resetRoomState(timeLimitEntered);
         this.user = 0;
         this.socket.on('connect', () => {
@@ -253,12 +258,12 @@ export default class Game extends Component {
                     this.opp_ready = 1;
                     console.log("In socket", this.me_ready, this.opp_ready);
                     if(this.me_ready === 1){
-                        this.resetRoomState();
+                        this.resetRoomState(this.timeLimit);
                         this.setState({curr_player : 1});
                     }
                 });
                 
-                this.socket.once('second joined',()=>{
+                this.socket.on('second joined',()=>{
                     this.setState({room_full: 2});
                     this.intervalID = setInterval(()=>{
                         let player1Time = this.state.player1Time;
@@ -342,7 +347,7 @@ export default class Game extends Component {
         this.socket.emit("player ready");
         if(this.opp_ready === 1){
             console.log("Opponent is also ready");
-            this.resetRoomState();
+            this.resetRoomState(this.timeLimit);
             this.setState({curr_player : 1});
         }else{
             console.log("Opponent isnt ready");

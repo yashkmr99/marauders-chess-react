@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
       user2:(user===2)?true:false 
     }
     socket.emit('user',user,rooms[roomNo].state);  
+    console.log(rooms[roomNo].state);
   });
 
   socket.on('send roomId',(roomId)=>{    
@@ -62,6 +63,7 @@ io.on('connection', (socket) => {
         socket.emit('user',user,rooms[roomId].state);
         io.to(roomId).emit('second joined'); 
         console.log(Object.keys(rooms));
+        console.log(rooms[roomId].state);
       }
     }
     else{
