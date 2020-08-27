@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Node.css';
+import './../ui/ui.css'
 
 export default class Node extends Component {
 
@@ -40,18 +41,21 @@ export default class Node extends Component {
          : '';
 
         return (
-            <div
-                id = {`node-${row}-${col}`}
-                className = {`node ${extraClassName}`}
-                // onMouseDown = {() => onMouseDown(row, col)}
-                // onMouseEnter = {() => onMouseEnter(row, col)}
-                // onMouseUp = {() => onMouseUp()}
-                onClick = {() => onClick(row, col, player)}
-                style = {{"backgroundImage": "url('"+this.img_dict[player][piece]+"')",
-                            "backgroundPosition": "center",
-                            "backgroundRepeat": "no-repeat",
-                        "backgroundColor": getBgColor(row, col)}}
-            ></div>
+            <>
+                <div
+                    id = {`node-${row}-${col}`}
+                    className = {`node ${extraClassName}`}
+                    // onMouseDown = {() => onMouseDown(row, col)}
+                    // onMouseEnter = {() => onMouseEnter(row, col)}
+                    // onMouseUp = {() => onMouseUp()}
+                    onClick = {() => onClick(row, col, player)}
+                    style = {{"backgroundImage": "url('"+this.img_dict[player][piece]+"')",
+                                "backgroundPosition": "center",
+                                "backgroundRepeat": "no-repeat",
+                            "backgroundColor": getBgColor(row, col)}}
+                ></div>
+                
+            </>
         );
     }
 }

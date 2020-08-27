@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Game.css';
+import './ui/ui.css';
 import Node from './Node/Node';
 import initial_nodes from './initial_nodes.jsx';
 import getNewGridWithRotated from './rotateBoard.jsx';
@@ -33,6 +34,7 @@ export default class Game extends Component {
             samePC: true,
             player1Time: 1200,  //Time in seconds
             player2Time: 1200,
+            highlight: 0,
         };
         this.startSamePC = this.startSamePC.bind(this);
         this.quitGame = this.quitGame.bind(this);
@@ -40,7 +42,7 @@ export default class Game extends Component {
 
     componentDidMount(){
         const grid = getInitialGrid();
-
+        
         this.setState({grid});
         if(!this.state.samePC)
         {
@@ -337,7 +339,6 @@ export default class Game extends Component {
     }
 
     playerReady(){
-
         this.me_ready = 1;
         console.log("came here", this.me_ready);
         this.socket.emit("player ready");
@@ -350,9 +351,14 @@ export default class Game extends Component {
         }
     }
 
+    showHighlighter(val){
+        console.log("huh");
+        this.setState({highlight: val});
+    }
+
     render(){
         const {grid, mouseIsPressed, curr_player, room_full,Id, log_message, player1Time, player2Time} = this.state;
-        
+
         return (
             <>
             <HeadingNav gameRunning = {this.state.gameRunning}
@@ -360,16 +366,18 @@ export default class Game extends Component {
             <div class = "container-fluid">
             <div class="row">
                 <div class = "col-sm-9" class = "col-md-9" class="col-lg-9">
-                <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,0)}>
+                <button onMouseEnter={() => this.showHighlighter(1)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,0)}>
                         Rotate-A
                     </button>
-                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,1)}>
+                    <button onMouseEnter={() => this.showHighlighter(2)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,1)}>
                         Rotate-B
                     </button>
-                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,2)}>
+                    <button onMouseEnter={() => this.showHighlighter(3)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5 mt-2" onClick = {() => this.rotate(0,2)}>
                         Rotate-C
                     </button>
                     <div className="grid">
+                        <>
+                        <div class="highlightGrid"><div class={"highlighter board"+(this.state.highlight)}></div></div>
                         {grid.map((row, rowIdx) => {
                             return (
                                 <div key = {rowIdx}>
@@ -396,15 +404,17 @@ export default class Game extends Component {
                             );
 
                         })}
+                            
+                        </>
                     </div>
                     
-                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,0)}>
+                    <button onMouseEnter={() => this.showHighlighter(4)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,0)}>
                         Rotate-D
                     </button>
-                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,1)}>
+                    <button onMouseEnter={() => this.showHighlighter(5)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,1)}>
                         Rotate-E
                     </button>
-                    <button type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,2)}>
+                    <button onMouseEnter={() => this.showHighlighter(6)} onMouseLeave={() => this.showHighlighter(0)} type="button" class="btn btn-info btn-sm ml-5 mr-5" onClick = {() => this.rotate(1,2)}>
                         Rotate-F
                     </button>
                 </div>
