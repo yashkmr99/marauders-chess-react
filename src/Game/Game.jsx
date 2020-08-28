@@ -154,7 +154,7 @@ export default class Game extends Component {
         console.log(roomId);
         this.socket  = io(serverURI);
         
-        this.setState({runningSamePc: false});
+        this.resetStateVars();
 
         this.socket.on('connect', () => {
             console.log("socket connected");
@@ -215,6 +215,18 @@ export default class Game extends Component {
         });
     }
 
+    resetStateVars(){
+        const samePC = false;
+        const gameRunning = true;
+        const grid = getInitialGrid();
+        const runningSamePc = false;
+        const curr_player = 0;
+        this.user = this.user == 1? 2:1;
+        this.me_ready = 0;
+        this.opp_ready = 0;
+        this.setState({grid, gameRunning, samePC, runningSamePc, curr_player});
+    }
+
     resetRoomState(timeLimitEntered){
         const samePC = false;
         const gameRunning = true;
@@ -224,6 +236,8 @@ export default class Game extends Component {
         const runningSamePc = false;
         const curr_player = 0;
         this.user = this.user == 1? 2: 1;
+        this.me_ready = 0;
+        this.opp_ready = 0;
         this.setState({grid, gameRunning, samePC, player1Time, player2Time, runningSamePc, curr_player});
     }
 
