@@ -23,7 +23,7 @@ class GameInfo extends Component {
     }
 
     handleRematch(){
-        this.props.endGame();
+        this.props.endGame(0);
     }
 
     handleStartGame(){

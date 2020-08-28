@@ -116,8 +116,8 @@ export default class Game extends Component {
 
         this.setState({log_message, initial_click, curr_player},()=>{if(!this.state.samePC){this.socket.emit('move made',this.state)}});
         if(piece_killed === 'king'){
-            this.quitGame();
-            alert('Game Over: Player ' + (3-curr_player) + ' won !!');
+            this.setState({curr_player: 0}); // Donno why i need to add here as well
+            this.endGame(1);
         }
     }
 
@@ -200,9 +200,8 @@ export default class Game extends Component {
             });
             this.socket.on('surrender', (loser) =>{
                 let winner = loser == 1 ? 2:1;
-                this.setState({curr_player: 0, winner_color : winner});
-                this.me_ready = 0;
-                this.opp_ready = 0;
+                this.setState({winner_color : winner});
+                this.gameResult();
             });
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
@@ -224,7 +223,8 @@ export default class Game extends Component {
         this.user = this.user == 1? 2:1;
         this.me_ready = 0;
         this.opp_ready = 0;
-        this.setState({grid, gameRunning, samePC, runningSamePc, curr_player});
+        const winner_color = 0;
+        this.setState({grid, gameRunning, samePC, winner_color,runningSamePc, curr_player});
     }
 
     resetRoomState(timeLimitEntered){
@@ -295,10 +295,8 @@ export default class Game extends Component {
             });
             this.socket.on('surrender', (loser) =>{
                 let winner = loser == 1 ? 2:1;
-                // console.log("Winner is here");
-                this.setState({curr_player: 0, winner_color : winner});
-                this.me_ready = 0;
-                this.opp_ready = 0;
+                this.setState({winner_color : winner});
+                this.gameResult();
             });
             this.socket.on('board changed',(state)=>{
                 // console.log(state);
@@ -335,13 +333,24 @@ export default class Game extends Component {
     }
 
     timeOver(){
-        let p_won = this.state.curr_player===1 ? 'Player 2' : 'Player 1';
-        this.quitGame();
-        alert('Time Up: ' + p_won + ' won !!');
+        let winner = this.state.curr_player===1 ? 2 : 1;
+        this.socket.emit('end game', winner === 1?2:1);
+        this.gameResult(winner);
     }
 
-    endGame(){
-        this.socket.emit('end game', this.user);
+    // argument 0: surrender, argument 1: King killed
+    endGame(reason){
+        let loser = reason === 0 ? this.user : (3-this.user);
+        console.log("Called endGame here");
+        this.socket.emit('end game', loser);
+    }
+
+    gameResult(){
+        clearInterval(this.intervalID);
+        this.setState({curr_player: 0});
+        this.me_ready = 0;
+        this.opp_ready = 0;
+        console.log("WInner is : ",this.state.winner_color);
     }
 
     quitGame(){
@@ -447,7 +456,7 @@ export default class Game extends Component {
                                 playerReady = {() => this.playerReady()}
                                 timeOver = {() => this.timeOver()}
                                 quitGame = {() => this.quitGame()}
-                                endGame = {() => this.endGame()}
+                                endGame = {(reason) => this.endGame(reason)}
                                  />
                 : <OutsideGame startSamePC={this.startSamePC} 
                                 joinRoom={(roomId)=>this.joinRoom(roomId)} 
