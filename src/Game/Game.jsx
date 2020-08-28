@@ -336,6 +336,7 @@ export default class Game extends Component {
         let winner = this.state.curr_player===1 ? 2 : 1;
         this.socket.emit('end game', winner === 1?2:1);
         this.gameResult(winner);
+        clearInterval(this.intervalID);
     }
 
     // argument 0: surrender, argument 1: King killed
