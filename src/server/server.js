@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
       user2:(user===2)?true:false 
     }
     socket.emit('user',user,rooms[roomNo].state);  
-    console.log(rooms[roomNo].state);
+    // console.log(rooms[roomNo].state);
   });
 
   socket.on('send roomId',(roomId)=>{    
@@ -62,8 +62,8 @@ io.on('connection', (socket) => {
         }; 
         socket.emit('user',user,rooms[roomId].state);
         io.to(roomId).emit('second joined'); 
-        console.log(Object.keys(rooms));
-        console.log(rooms[roomId].state);
+        // console.log(Object.keys(rooms));
+        // console.log(rooms[roomId].state);
       }
     }
     else{
@@ -106,6 +106,7 @@ io.on('connection', (socket) => {
     }
     else{
       // If 2 sockets belong to that room, tell the other socket that opponent has quit
+      console.log('user leaving');
       io.to(socketIDs[0]===socket.id?socketIDs[1]:socketIDs[0]).emit('opponent quit');
     }
     
@@ -113,7 +114,6 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', (msg) => {
     // console.log(msg);
-
     console.log('user disconnected');
   });
 });  

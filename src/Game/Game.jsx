@@ -56,8 +56,14 @@ export default class Game extends Component {
                 }
                 else{
                     player2Time-=1;
-                } 
+                }
                 this.setState({player1Time, player2Time});
+                if(player1Time===0 || player2Time===0)
+                {
+                    console.log('timeUp');
+                    clearInterval(this.intervalID);
+                    this.timeOver();
+                } 
             },1000);
         }
     }
@@ -106,8 +112,14 @@ export default class Game extends Component {
                     }
                     else{
                         player2Time-=1;
-                    } 
+                    }
                     this.setState({player1Time, player2Time});
+                    if(player1Time===0 || player2Time===0)
+                    {
+                        console.log('timeUp');
+                        clearInterval(this.intervalID);
+                        this.timeOver();
+                    } 
                 },1000);
             }
             else log_message += "Invalid move";
@@ -144,9 +156,43 @@ export default class Game extends Component {
                 player2Time-=1;
             } 
             this.setState({player1Time, player2Time});
+            if(player1Time===0 || player2Time===0)
+            {
+                console.log('timeUp');
+                clearInterval(this.intervalID);
+                this.timeOver();
+            }
         },1000);
 
         this.setState({grid: newGrid, curr_player},()=>{if(!this.state.samePC){this.socket.emit('move made',this.state)}});
+    }
+
+
+    resetStateVars(){
+        const samePC = false;
+        const gameRunning = true;
+        const grid = getInitialGrid();
+        const runningSamePc = false;
+        const curr_player = 0;
+        this.user = this.user == 1? 2:1;
+        this.me_ready = 0;
+        this.opp_ready = 0;
+        const winner_color = 0;
+        this.setState({grid, gameRunning, samePC, winner_color,runningSamePc, curr_player});
+    }
+
+    resetRoomState(timeLimitEntered){
+        const samePC = false;
+        const gameRunning = true;
+        const grid = getInitialGrid();
+        const player1Time= parseInt(timeLimitEntered) * 60;  //Time in seconds
+        const player2Time= parseInt(timeLimitEntered) * 60;
+        const runningSamePc = false;
+        const curr_player = 0;
+        this.user = this.user == 1? 2: 1;
+        this.me_ready = 0;
+        this.opp_ready = 0;
+        this.setState({grid, gameRunning, samePC, player1Time, player2Time, runningSamePc, curr_player});
     }
 
     joinRoom(roomId)
@@ -195,6 +241,12 @@ export default class Game extends Component {
                             player2Time-=1;
                         }
                         this.setState({player1Time, player2Time});
+                        if(player1Time===0 || player2Time===0)
+                        {
+                            console.log('timeUp');
+                            clearInterval(this.intervalID);
+                            this.timeOver();
+                        }
                     },1000);
                 });
             });
@@ -212,33 +264,6 @@ export default class Game extends Component {
                 alert('Opponent quits: You won !!');        
             });
         });
-    }
-
-    resetStateVars(){
-        const samePC = false;
-        const gameRunning = true;
-        const grid = getInitialGrid();
-        const runningSamePc = false;
-        const curr_player = 0;
-        this.user = this.user == 1? 2:1;
-        this.me_ready = 0;
-        this.opp_ready = 0;
-        const winner_color = 0;
-        this.setState({grid, gameRunning, samePC, winner_color,runningSamePc, curr_player});
-    }
-
-    resetRoomState(timeLimitEntered){
-        const samePC = false;
-        const gameRunning = true;
-        const grid = getInitialGrid();
-        const player1Time= parseInt(timeLimitEntered) * 60;  //Time in seconds
-        const player2Time= parseInt(timeLimitEntered) * 60;
-        const runningSamePc = false;
-        const curr_player = 0;
-        this.user = this.user == 1? 2: 1;
-        this.me_ready = 0;
-        this.opp_ready = 0;
-        this.setState({grid, gameRunning, samePC, player1Time, player2Time, runningSamePc, curr_player});
     }
 
     startNewRoom(timeLimitEntered){
@@ -288,6 +313,12 @@ export default class Game extends Component {
                             player2Time-=1;
                         }
                         this.setState({player1Time, player2Time});
+                        if(player1Time===0 || player2Time===0)
+                        {
+                            console.log('timeUp');
+                            clearInterval(this.intervalID);
+                            this.timeOver();
+                        }
                     },1000);
                 });
 
@@ -336,7 +367,7 @@ export default class Game extends Component {
         let winner = this.state.curr_player===1 ? 2 : 1;
         this.socket.emit('end game', winner === 1?2:1);
         this.gameResult(winner);
-        clearInterval(this.intervalID);
+        // clearInterval(this.intervalID);
     }
 
     // argument 0: surrender, argument 1: King killed

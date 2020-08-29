@@ -17,13 +17,6 @@ export default class Clock extends Component {
         return nextProps.time >= 0;
     }
 
-    componentWillUpdate(nextProps) {
-        if (nextProps.time <= 0) {
-            this.props.timeOver();
-        }
-    }
-
-
     render() {
         const [minutes, seconds] = parseTime(this.props.time);
         return (
