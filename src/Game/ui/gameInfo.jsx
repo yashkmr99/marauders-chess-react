@@ -165,7 +165,9 @@ class GameInfo extends Component {
                         <></>
                       )}
                       <div class="card-body">
-                        <h1 class="card-title">You</h1>
+                        <h1 class="card-title">
+                          You {me_ready} {this.props.me_ready}
+                        </h1>
                       </div>
                     </div>
                     <div class="vs">
@@ -182,7 +184,9 @@ class GameInfo extends Component {
                         <></>
                       )}
                       <div class="card-body">
-                        <h1 class="card-title">Opponent</h1>
+                        <h1 class="card-title">
+                          Opponent {opp_ready} {this.props.opp_ready}
+                        </h1>
                       </div>
                     </div>
                   </div>

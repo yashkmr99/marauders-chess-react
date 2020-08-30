@@ -570,8 +570,6 @@ export default class Game extends Component {
                 opp_ready={this.opp_ready}
                 room_full={room_full}
                 roomId={Id}
-                me_ready={this.me_ready}
-                opp_ready={this.opp_ready}
                 runningSamePc={this.state.runningSamePc}
                 log_message={log_message}
                 player1Time={player1Time}
