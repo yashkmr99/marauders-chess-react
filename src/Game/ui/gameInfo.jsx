@@ -37,6 +37,8 @@ class GameInfo extends Component {
     const player_color = this.props.my_color;
     const opp_present = this.props.room_full == 2 ? 1 : 0;
     const winner_color = this.props.winner_color;
+    const me_ready = this.props.me_ready;
+    const opp_ready = this.props.opp_ready;
 
     return (
       <>
@@ -157,7 +159,7 @@ class GameInfo extends Component {
                   <div class="player-cards">
                     <div class="card border-0">
                       <img class="card-img-top" src={myProfile}></img>
-                      {this.props.me_ready ? (
+                      {me_ready === 1 ? (
                         <img class="img-dialog-left" src={mydialog}></img>
                       ) : (
                         <></>
@@ -174,7 +176,7 @@ class GameInfo extends Component {
                         class="card-img-top"
                         src={this.props.room_full === 2 ? oppProfile : inactive}
                       ></img>
-                      {this.props.opp_ready ? (
+                      {opp_ready === 1 ? (
                         <img class="img-dialog-right" src={oppdialog}></img>
                       ) : (
                         <></>
