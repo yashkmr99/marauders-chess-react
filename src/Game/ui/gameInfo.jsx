@@ -141,11 +141,12 @@ class GameInfo extends Component {
               </div>
             </div>
             <Modal show={this.props.curr_player === 0}>
-              <Modal.Header closeButton>
+              <Modal.Header>
                 <Modal.Title>Game Waiting Room</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div>
+                  <h1 class="text-center">Room Id: {roomId}</h1>
                   {winner_color === 0 ? (
                     <></>
                   ) : (
@@ -165,9 +166,7 @@ class GameInfo extends Component {
                         <></>
                       )}
                       <div class="card-body">
-                        <h1 class="card-title">
-                          You {me_ready} {this.props.me_ready}
-                        </h1>
+                        <h1 class="card-title">You</h1>
                       </div>
                     </div>
                     <div class="vs">
@@ -184,9 +183,7 @@ class GameInfo extends Component {
                         <></>
                       )}
                       <div class="card-body">
-                        <h1 class="card-title">
-                          Opponent {opp_ready} {this.props.opp_ready}
-                        </h1>
+                        <h1 class="card-title">Opponent</h1>
                       </div>
                     </div>
                   </div>

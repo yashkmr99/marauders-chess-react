@@ -35,6 +35,7 @@ export default class Game extends Component {
       player1Time: 1200, //Time in seconds
       player2Time: 1200,
       highlight: 0,
+      changetrigger: 0,
     };
     this.startSamePC = this.startSamePC.bind(this);
     this.quitGame = this.quitGame.bind(this);
@@ -247,6 +248,7 @@ export default class Game extends Component {
 
         this.socket.on("player ready", () => {
           this.opp_ready = 1;
+          this.setState({ changetrigger: 1 });
           console.log("Ready states : ", this.me_ready, this.opp_ready);
           if (this.me_ready === 1) {
             this.resetRoomState(this.state.timeLimit);
@@ -318,6 +320,7 @@ export default class Game extends Component {
 
         this.socket.on("player ready", () => {
           this.opp_ready = 1;
+          this.setState({ changetrigger: 1 });
           console.log("In socket", this.me_ready, this.opp_ready);
           if (this.me_ready === 1) {
             this.resetRoomState(this.state.timeLimit);
@@ -423,6 +426,7 @@ export default class Game extends Component {
 
   playerReady() {
     this.me_ready = 1;
+    this.setState({ changetrigger: 1 });
     console.log("came here", this.me_ready);
     this.socket.emit("player ready");
     if (this.opp_ready === 1) {
