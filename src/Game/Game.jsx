@@ -227,12 +227,11 @@ export default class Game extends Component {
     console.log(roomId);
     this.socket = io(serverURI);
 
-    this.resetStateVars();
-
     this.socket.on("connect", () => {
       console.log("socket connected");
       this.socket.emit("send roomId", roomId, this.state);
       this.socket.once("user", (data, state) => {
+        this.resetStateVars();
         this.user = data;
         this.me_ready = 0;
         this.opp_ready = 0;
