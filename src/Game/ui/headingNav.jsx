@@ -195,7 +195,7 @@ class AboutModal extends Component {
               >
                 <i class="fa fa-github fa-2x"></i>
                 <span class="icon_text">
-                  Show your love by giving a Star to github our repository
+                  Show your love by giving a Star to our Github Repository
                 </span>
               </a>
             </div>
