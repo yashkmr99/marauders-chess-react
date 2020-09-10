@@ -1,5 +1,5 @@
 # Multiplayer Chess using React & Socket.io
-A chess game variant built using ReactJS and Socket.io.\
+A Multiplayer Chess game variant built using ReactJS and Socket.io.\
 The beta version of the game has been deployed on Heroku.\
 https://desolate-citadel-59951.herokuapp.com/
 
