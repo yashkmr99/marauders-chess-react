@@ -1,4 +1,6 @@
-const server = require("http").createServer();
+const express = require("express");
+const app = express();
+const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
 var rooms = {
@@ -8,7 +10,10 @@ var rooms = {
   },
 };
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+const INDEX = "/../../build";
+
+app.use(express.static(__dirname + "/../../build"));
 
 // Search for available rooms
 function getRoomId() {
